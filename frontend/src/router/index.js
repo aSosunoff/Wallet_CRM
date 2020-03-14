@@ -1,6 +1,5 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import Home from '@/views/Home.vue';
 
 Vue.use(VueRouter);
 
@@ -11,17 +10,11 @@ export default new VueRouter({
 		{
 			path: '/login',
 			name: 'login',
-			meta: {
-				layout: 'empty',
-			},
 			component: () => import('@/views/Login.vue'),
 		},
 		{
 			path: '/register',
 			name: 'register',
-			meta: {
-				layout: 'empty',
-			},
 			component: () => import('@/views/Register.vue'),
 		},
 		{
@@ -30,7 +23,7 @@ export default new VueRouter({
 			meta: {
 				layout: 'main',
 			},
-			component: Home,
+			component: () => import('@/views/Home.vue'),
 		},
 		{
 			path: '/categories',

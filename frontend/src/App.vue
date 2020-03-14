@@ -1,9 +1,5 @@
 <template>
-	<div id="app">
-		<component :is="layout">
-			<router-view />
-		</component>
-	</div>
+	<component :is="layout"/>
 </template>
 
 <script>
@@ -15,7 +11,8 @@ export default {
 		layout() {
 			console.log(this);
 			console.log(this.$route);
-			return `${this.$route.meta.layout}-layout`;
+			const layput = this.$route.meta.layout || 'empty';
+			return `${layput}-layout`;
 		},
 	},
 	components: {
