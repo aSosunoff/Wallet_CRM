@@ -13,8 +13,7 @@ import MainLayout from '@/layouts/MainLayout.vue';
 export default {
 	computed: {
 		layout() {
-			const typeLayout = this.$route.meta.layout || 'empty';
-			return `${typeLayout}-layout`;
+			return `${this.$route.meta.layout}-layout`;
 		},
 	},
 	components: {
