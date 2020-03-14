@@ -9,8 +9,8 @@ import MainLayout from '@/layouts/MainLayout.vue';
 export default {
 	computed: {
 		layout() {
-			const layput = this.$route.meta.layout || 'empty';
-			return `${layput}-layout`;
+			const layout = this.$route.meta.layout || 'empty';
+			return `${layout}-layout`;
 		},
 	},
 	components: {
