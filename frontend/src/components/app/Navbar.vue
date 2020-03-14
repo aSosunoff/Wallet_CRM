@@ -5,7 +5,7 @@
 				<a href="#" @click.prevent="$emit('click')">
 					<i class="material-icons black-text">dehaze</i>
 				</a>
-				<span class="black-text">{{ date | dateFilter('datetime') }}</span>
+				<!-- <span class="black-text">{{ date | dateFilter('datetime') }}</span> -->
 			</div>
 
 			<ul class="right hide-on-small-and-down">
@@ -42,8 +42,6 @@
 </template>
 
 <script>
-import M from 'materialize-css';
-
 export default {
 	data: () => ({
 		date: new Date(),
@@ -61,7 +59,7 @@ export default {
 			this.date = new Date();
 		}, 1000);
 
-		this.dropdown = M.Dropdown.init(this.$refs.dropdown);
+		this.dropdown = window.M.Dropdown.init(this.$refs.dropdown);
 	},
 	beforeDestroy() {
 		clearInterval(this.interval);
