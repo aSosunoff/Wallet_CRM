@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
+import Home from '@/views/Home.vue';
 
 Vue.use(VueRouter);
 
@@ -29,7 +30,7 @@ export default new VueRouter({
 			meta: {
 				layout: 'main',
 			},
-			component: () => import('@/views/Home.vue'),
+			component: Home,
 		},
 		{
 			path: '/categories',
