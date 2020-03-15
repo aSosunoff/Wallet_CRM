@@ -68,12 +68,6 @@ export default {
 					.filter(e => ['field-email', 'field-password', 'field-name', 'field-agree'].includes(e.$options.name))
 					.map(e => e.checkValidate()),
 			)
-				/* .then(res => ({
-					email: res[0],
-					password: res[1],
-					name: res[2],
-					agree: res[3],
-				})) */
 				.then(res => {
 					const err = res.filter(e => e.status === 'rejected').map(e => e.reason.message);
 
