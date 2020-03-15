@@ -1,83 +1,22 @@
 <template>
-	<form class="card auth-card" @submit.prevent="onSubmit">
+	<form class="card auth-card hoverable" @submit.prevent="onSubmit">
 		<div class="card-content">
 			<span class="card-title">Регистрация</span>
 
-			<div class="input-field">
-				<input
-					id="email"
-					type="text"
-					v-model.trim="email"
-					:class="{
-						invalid:
-							($v.email.$dirty && !$v.email.required) ||
-							($v.email.$dirty && !$v.email.email),
-					}"
-					@keypress="onPressKey"
-				/>
+			<FieldEmail :disabled="checkForm"></FieldEmail>
 
-				<label for="email">Email</label>
+			<FieldPassword :disabled="checkForm"></FieldPassword>
 
-				<small class="helper-text invalid" v-if="$v.email.$dirty && !$v.email.required"
-					>Необходимо заполнить поле email</small
-				>
-				<small class="helper-text invalid" v-else-if="$v.email.$dirty && !$v.email.email"
-					>Поле email не корректно</small
-				>
-			</div>
+			<FieldName :disabled="checkForm"></FieldName>
 
-			<div class="input-field">
-				<input
-					id="password"
-					type="password"
-					v-model.trim="password"
-					:class="{
-						invalid:
-							($v.password.$dirty && !$v.password.required) ||
-							($v.password.$dirty && !$v.password.minLength),
-					}"
-					@keypress="onPressKey"
-				/>
-
-				<label for="password">Пароль</label>
-
-				<small
-					class="helper-text invalid"
-					v-if="$v.password.$dirty && !$v.password.required"
-					>Введите пароль</small
-				>
-				<small
-					class="helper-text invalid"
-					v-else-if="$v.password.$dirty && !$v.password.minLength"
-					>Минимальное количество символов {{ $v.password.$params.minLength.min }}. Сейчас
-					он {{ password.length }}</small
-				>
-			</div>
-
-			<div class="input-field">
-				<input
-					id="name"
-					type="text"
-					v-model.trim="name"
-					:class="{ invalid: $v.name.$dirty && !$v.name.required }"
-				/>
-
-				<label for="name">Имя</label>
-
-				<small class="helper-text invalid" v-if="$v.name.$dirty && !$v.name.required"
-					>Необходимо ввести имя</small
-				>
-			</div>
-
-			<p>
-				<label>
-					<input type="checkbox" v-model="agree"/>
-					<span>С правилами согласен</span>
-				</label>
-			</p>
+			<FieldAgree :disabled="checkForm"></FieldAgree>
 		</div>
 
-		<div class="card-action">
+		<div class="card-content red lighten-5" v-show="canAccess">
+			{{ canAccess }}
+		</div>
+
+		<div class="card-action" v-if="!checkForm">
 			<div>
 				<button class="btn waves-effect waves-light auth-submit" type="submit">
 					Зарегистрироваться
@@ -90,62 +29,67 @@
 				<router-link to="/login">Войти</router-link>
 			</p>
 		</div>
+
+		<div class="progress" v-else>
+			<div class="indeterminate"></div>
+		</div>
 	</form>
 </template>
 
 <script>
-import { email, minLength, required } from 'vuelidate/lib/validators';
+import FieldEmail from '@/components/app/formAuthRegister/field.email.vue';
+import FieldPassword from '@/components/app/formAuthRegister/field.password.vue';
+import FieldName from '@/components/app/formAuthRegister/field.name.vue';
+import FieldAgree from '@/components/app/formAuthRegister/field.agree.vue';
 
 export default {
 	name: 'register',
 	data: () => ({
-		email: '',
-		password: '',
-		name: '',
-		agree: false,
-	}),
-	validations: {
-		email: { email, required },
-		password: { required, minLength: minLength(6) },
-		name: { required },
-		agree: { checked: v => v },
-
 		canAccess: '',
 		checkForm: false,
+	}),
+	components: {
+		FieldEmail,
+		FieldPassword,
+		FieldName,
+		FieldAgree,
 	},
 	methods: {
-		onPressKey() {
-			this.canAccess = '';
-		},
 		onCheckForm(formData, callback) {
 			console.log(formData);
-
-			this.checkForm = true;
 			setTimeout(() => {
-				this.checkForm = false;
-				// callback('У вас нет прав для входа');
-				callback();
+				callback('У вас нет прав для входа');
+				// callback();
 			}, 4000);
 		},
 		onSubmit() {
-			if (this.$v.$invalid) {
-				this.$v.$touch();
-				return;
-			}
+			Promise.all(
+				this.$children
+					.filter(e => ['field-email', 'field-password', 'field-name', 'field-agree'].includes(e.$options.name))
+					.map(e => e.checkValidate()),
+			)
+				.then(res => ({
+					email: res[0],
+					password: res[1],
+					name: res[2],
+					agree: res[3],
+				}))
+				.then(formData => {
+					this.checkForm = true;
+					this.canAccess = '';
+					this.onCheckForm(formData, canAccess => {
+						this.canAccess = canAccess;
 
-			const formData = {
-				email: this.email,
-				password: this.password,
-				name: this.name,
-			};
+						if (!canAccess) {
+							this.$router.push('/');
+						}
 
-			this.onCheckForm(formData, canAccess => {
-				this.canAccess = canAccess;
-
-				if (!canAccess) {
-					this.$router.push('/');
-				}
-			});
+						this.checkForm = false;
+					});
+				})
+				.catch(err => {
+					this.$message(err.message);
+				});
 		},
 	},
 };

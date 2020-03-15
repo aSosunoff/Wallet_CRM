@@ -3,69 +3,18 @@
 		<div class="card-content">
 			<span class="card-title">Вход на сайт</span>
 
-			<div class="input-field">
-				<input
-					id="email"
-					type="text"
-					v-model.trim="email"
-					:class="{
-						invalid:
-							($v.email.$dirty && !$v.email.required) ||
-							($v.email.$dirty && !$v.email.email),
-					}"
-					@keypress="onPressKey"
-				/>
+			<FieldEmail :disabled="checkForm"></FieldEmail>
 
-				<label for="email">Email</label>
-
-				<small class="helper-text invalid" v-if="$v.email.$dirty && !$v.email.required"
-					>Необходимо заполнить поле email</small
-				>
-				<small class="helper-text invalid" v-else-if="$v.email.$dirty && !$v.email.email"
-					>Поле email не корректно</small
-				>
-			</div>
-
-			<div class="input-field">
-				<input
-					id="password"
-					type="password"
-					v-model.trim="password"
-					:class="{
-						invalid:
-							($v.password.$dirty && !$v.password.required) ||
-							($v.password.$dirty && !$v.password.minLength),
-					}"
-					@keypress="onPressKey"
-				/>
-
-				<label for="password">Пароль</label>
-
-				<small
-					class="helper-text invalid"
-					v-if="$v.password.$dirty && !$v.password.required"
-					>Введите пароль</small
-				>
-				<small
-					class="helper-text invalid"
-					v-else-if="$v.password.$dirty && !$v.password.minLength"
-					>Минимальное количество символов {{ $v.password.$params.minLength.min }}. Сейчас
-					он {{ password.length }}</small
-				>
-			</div>
+			<FieldPassword :disabled="checkForm"></FieldPassword>
 		</div>
 
 		<div class="card-content red lighten-5" v-show="canAccess">
 			{{ canAccess }}
 		</div>
 
-		<div class="card-action">
+		<div class="card-action" v-if="!checkForm">
 			<div>
-				<button
-					class="btn waves-effect waves-light auth-submit"
-					type="submit"
-					:class="{ disabled: checkForm }"
-				>
+				<button class="btn waves-effect waves-light auth-submit" type="submit">
 					Войти
 					<i class="material-icons right">send</i>
 				</button>
@@ -76,24 +25,27 @@
 				<router-link to="/register">Зарегистрироваться</router-link>
 			</p>
 		</div>
+
+		<div class="progress" v-else>
+			<div class="indeterminate"></div>
+		</div>
 	</form>
 </template>
 
 <script>
-import { email, minLength, required } from 'vuelidate/lib/validators';
 import messages from '@/utils/messages';
+import FieldEmail from '@/components/app/formAuthRegister/field.email.vue';
+import FieldPassword from '@/components/app/formAuthRegister/field.password.vue';
 
 export default {
 	name: 'login',
 	data: () => ({
-		email: '',
-		password: '',
 		canAccess: '',
 		checkForm: false,
 	}),
-	validations: {
-		email: { email, required },
-		password: { required, minLength: minLength(6) },
+	components: {
+		FieldEmail,
+		FieldPassword,
 	},
 	mounted() {
 		if (messages[this.$route.query.message]) {
@@ -101,37 +53,38 @@ export default {
 		}
 	},
 	methods: {
-		onPressKey() {
-			this.canAccess = '';
-		},
 		onCheckForm(formData, callback) {
-			console.log(formData);
-
-			this.checkForm = true;
 			setTimeout(() => {
-				this.checkForm = false;
 				// callback('У вас нет прав для входа');
 				callback();
 			}, 4000);
 		},
 		onSubmit() {
-			if (this.$v.$invalid) {
-				this.$v.$touch();
-				return;
-			}
+			Promise.all(
+				this.$children
+					.filter(e => ['field-email', 'field-password'].includes(e.$options.name))
+					.map(e => e.checkValidate()),
+			)
+				.then(res => ({
+					email: res[0],
+					password: res[1],
+				}))
+				.then(formData => {
+					this.checkForm = true;
+					this.canAccess = '';
+					this.onCheckForm(formData, canAccess => {
+						this.canAccess = canAccess;
 
-			const formData = {
-				email: this.email,
-				password: this.password,
-			};
+						if (!canAccess) {
+							this.$router.push('/');
+						}
 
-			this.onCheckForm(formData, canAccess => {
-				this.canAccess = canAccess;
-
-				if (!canAccess) {
-					this.$router.push('/');
-				}
-			});
+						this.checkForm = false;
+					});
+				})
+				.catch(err => {
+					this.$message(err.message);
+				});
 		},
 	},
 };
