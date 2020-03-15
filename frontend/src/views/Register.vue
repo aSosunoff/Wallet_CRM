@@ -63,17 +63,31 @@ export default {
 			}, 4000);
 		},
 		onSubmit() {
-			Promise.all(
+			Promise.allSettled(
 				this.$children
 					.filter(e => ['field-email', 'field-password', 'field-name', 'field-agree'].includes(e.$options.name))
 					.map(e => e.checkValidate()),
 			)
-				.then(res => ({
+				/* .then(res => ({
 					email: res[0],
 					password: res[1],
 					name: res[2],
 					agree: res[3],
-				}))
+				})) */
+				.then(res => {
+					const err = res.filter(e => e.status === 'rejected').map(e => e.reason.message);
+
+					if (err.length) {
+						throw new Error(err.join('</br>'));
+					}
+
+					const formDataArr = res.map(e => e.value);
+
+					return {
+						email: formDataArr[0],
+						password: formDataArr[1],
+					};
+				})
 				.then(formData => {
 					this.checkForm = true;
 					this.canAccess = '';
