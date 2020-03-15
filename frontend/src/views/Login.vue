@@ -1,7 +1,7 @@
 <template>
 	<form class="card auth-card">
 		<div class="card-content">
-			<span class="card-title">Домашняя бухгалтерия</span>
+			<span class="card-title">Вход на сайт</span>
 			<div class="input-field">
 				<input id="email" type="text" class="validate" />
 				<label for="email">Email</label>
@@ -23,7 +23,7 @@
 
 			<p class="center">
 				Нет аккаунта?
-				<a href="/">Зарегистрироваться</a>
+				<router-link to="/register">Зарегистрироваться</router-link>
 			</p>
 		</div>
 	</form>
