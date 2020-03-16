@@ -3,17 +3,13 @@
 		<div class="card-content">
 			<span class="card-title">Регистрация</span>
 
-			<FieldEmail :disabled="checkForm"></FieldEmail>
+			<FieldEmail ref="fieldEmail" :disabled="checkForm"></FieldEmail>
 
-			<FieldPassword :disabled="checkForm"></FieldPassword>
+			<FieldPassword ref="fieldPassword" :disabled="checkForm"></FieldPassword>
 
-			<FieldName :disabled="checkForm"></FieldName>
+			<FieldName ref="fieldName" :disabled="checkForm"></FieldName>
 
-			<FieldAgree :disabled="checkForm"></FieldAgree>
-		</div>
-
-		<div class="card-content red lighten-5" v-show="canAccess">
-			{{ canAccess }}
+			<FieldAgree ref="fieldAgree" :disabled="checkForm"></FieldAgree>
 		</div>
 
 		<div class="card-action" v-if="!checkForm">
@@ -45,7 +41,6 @@ import FieldAgree from '@/components/app/formAuthRegister/field.agree.vue';
 export default {
 	name: 'register',
 	data: () => ({
-		canAccess: '',
 		checkForm: false,
 	}),
 	components: {
@@ -55,49 +50,49 @@ export default {
 		FieldAgree,
 	},
 	methods: {
-		onCheckForm(formData, callback) {
-			console.log(formData);
-			setTimeout(() => {
-				callback('У вас нет прав для входа');
-				// callback();
-			}, 4000);
+		async onCheckForm(formData) {
+			return new Promise((resolve, reject) => {
+				setTimeout(() => {
+					console.log(formData);
+					reject(new Error('У вас нет прав для входа'));
+					// resolve();
+				}, 4000);
+			});
 		},
-		onSubmit() {
-			Promise.allSettled(
-				this.$children
-					.filter(e => ['field-email', 'field-password', 'field-name', 'field-agree'].includes(e.$options.name))
-					.map(e => e.checkValidate()),
-			)
-				.then(res => {
-					const err = res.filter(e => e.status === 'rejected').map(e => e.reason.message);
+		async onSubmit() {
+			try {
+				const res = await Promise.allSettled([
+					this.$refs.fieldEmail.checkValidate(),
+					this.$refs.fieldPassword.checkValidate(),
+					this.$refs.fieldName.checkValidate(),
+					this.$refs.fieldAgree.checkValidate(),
+				]);
 
-					if (err.length) {
-						throw new Error(err.join('</br>'));
-					}
+				const err = res.filter(e => e.status === 'rejected').map(e => e.reason.message);
 
-					const formDataArr = res.map(e => e.value);
+				if (err.length) {
+					throw new Error(err.join('</br>'));
+				}
 
-					return {
-						email: formDataArr[0],
-						password: formDataArr[1],
-					};
-				})
-				.then(formData => {
-					this.checkForm = true;
-					this.canAccess = '';
-					this.onCheckForm(formData, canAccess => {
-						this.canAccess = canAccess;
+				const formDataArr = res.map(e => e.value);
 
-						if (!canAccess) {
-							this.$router.push('/');
-						}
+				const formData = {
+					email: formDataArr[0],
+					password: formDataArr[1],
+					name: formDataArr[2],
+					agree: formDataArr[3],
+				};
 
-						this.checkForm = false;
-					});
-				})
-				.catch(err => {
-					this.$message(err.message);
-				});
+				this.checkForm = true;
+
+				await this.onCheckForm(formData);
+
+				this.$router.push('/');
+			} catch (err) {
+				this.$error(err.message);
+			} finally {
+				this.checkForm = false;
+			}
 		},
 	},
 };

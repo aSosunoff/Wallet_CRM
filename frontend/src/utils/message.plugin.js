@@ -5,7 +5,7 @@ export default {
 		};
 
 		Vue.prototype.$error = html => {
-			window.M.toast({ html: `[Ошибка]: ${html}` });
+			window.M.toast({ html: `[Ошибка]:<br/>${html}` });
 		};
 	},
 };
