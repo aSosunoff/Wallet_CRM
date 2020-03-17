@@ -17,9 +17,6 @@ export default {
 		EmptyLayout,
 		MainLayout,
 	},
-	mounted() {
-		window.axios.defaults.withCredentials = true;
-	},
 };
 </script>
 

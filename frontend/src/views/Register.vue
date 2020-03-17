@@ -76,10 +76,7 @@ export default {
 
 				this.checkForm = true;
 
-				const response = await window.axios.post(
-					'http://localhost:3000/api/auth/register',
-					formData,
-				);
+				const response = await window.axiosTransport.post('auth/register', formData);
 
 				sessionStorage.setItem('username', response.data);
 

@@ -9,7 +9,11 @@ import '@/registerServiceWorker';
 import 'materialize-css/dist/js/materialize.min';
 import axios from 'axios/dist/axios.min';
 
-window.axios = axios;
+window.axiosTransport = axios.create({
+	baseURL: 'http://localhost:3000/api/',
+	timeout: 1000,
+	withCredentials: true,
+});
 
 Vue.config.productionTip = false;
 

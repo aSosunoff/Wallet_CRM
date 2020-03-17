@@ -70,10 +70,7 @@ export default {
 
 				this.checkForm = true;
 
-				const response = await window.axios.post(
-					'http://localhost:3000/api/auth/login',
-					formData,
-				);
+				const response = await window.axiosTransport.post('auth/login', formData);
 
 				sessionStorage.setItem('username', response.data);
 

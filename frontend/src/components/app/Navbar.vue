@@ -52,7 +52,7 @@ export default {
 	}),
 	methods: {
 		async logout() {
-			const response = await window.axios.post('http://localhost:3000/api/auth/logout');
+			const response = await window.axiosTransport.post('auth/logout');
 
 			sessionStorage.setItem('username', response.data);
 
