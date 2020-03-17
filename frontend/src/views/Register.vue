@@ -50,15 +50,6 @@ export default {
 		FieldAgree,
 	},
 	methods: {
-		async onCheckForm(formData) {
-			return new Promise((resolve, reject) => {
-				setTimeout(() => {
-					console.log(formData);
-					reject(new Error('У вас нет прав для входа'));
-					// resolve();
-				}, 4000);
-			});
-		},
 		async onSubmit() {
 			try {
 				const res = await Promise.allSettled([
@@ -85,11 +76,20 @@ export default {
 
 				this.checkForm = true;
 
-				await this.onCheckForm(formData);
+				const response = await window.axios.post(
+					'http://localhost:3000/api/auth/register',
+					formData,
+				);
+
+				sessionStorage.setItem('username', response.data);
 
 				this.$router.push('/');
 			} catch (err) {
-				this.$error(err.message);
+				if (err.response && 'data' in err.response) {
+					this.$error(err.response.data);
+				} else {
+					this.$error(err);
+				}
 			} finally {
 				this.checkForm = false;
 			}

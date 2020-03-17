@@ -1,5 +1,5 @@
 <template>
-	<component :is="layout"/>
+	<component :is="layout" />
 </template>
 
 <script>
@@ -16,6 +16,9 @@ export default {
 	components: {
 		EmptyLayout,
 		MainLayout,
+	},
+	mounted() {
+		window.axios.defaults.withCredentials = true;
 	},
 };
 </script>

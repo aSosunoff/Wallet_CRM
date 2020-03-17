@@ -17,7 +17,7 @@
 						data-target="dropdown"
 						ref="dropdown"
 					>
-						USER NAME
+						{{ userName }}
 						<i class="material-icons right">arrow_drop_down</i>
 					</a>
 
@@ -48,14 +48,20 @@ export default {
 		date: new Date(),
 		interval: null,
 		dropdown: null,
+		userName: '',
 	}),
 	methods: {
-		logout() {
-			console.log('logout');
+		async logout() {
+			const response = await window.axios.post('http://localhost:3000/api/auth/logout');
+
+			sessionStorage.setItem('username', response.data);
+
 			this.$router.push('/login?message=logout');
 		},
 	},
 	mounted() {
+		this.userName = sessionStorage.getItem('username');
+
 		this.interval = setInterval(() => {
 			this.date = new Date();
 		}, 1000);

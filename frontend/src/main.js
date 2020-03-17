@@ -7,6 +7,9 @@ import dateFilter from '@/filters/date.filter';
 import messagePlugin from '@/utils/message.plugin';
 import '@/registerServiceWorker';
 import 'materialize-css/dist/js/materialize.min';
+import axios from 'axios/dist/axios.min';
+
+window.axios = axios;
 
 Vue.config.productionTip = false;
 
