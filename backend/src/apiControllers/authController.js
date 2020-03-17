@@ -52,6 +52,6 @@ exports.postLogout = (req, res, next) => {
 			return next(err);
 		}
 
-		res.send('Вы не авторизованы в системе');
+		res.send();
 	});
 };

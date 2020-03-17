@@ -52,9 +52,9 @@ export default {
 	}),
 	methods: {
 		async logout() {
-			const response = await window.axiosTransport.post('auth/logout');
+			await window.axiosTransport.post('auth/logout');
 
-			sessionStorage.setItem('username', response.data);
+			sessionStorage.setItem('username', 'Вы не авторизованы');
 
 			this.$router.push('/login?message=logout');
 		},
