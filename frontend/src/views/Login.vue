@@ -3,12 +3,12 @@
 		<div class="card-content">
 			<span class="card-title">Вход на сайт</span>
 
-			<FieldEmail ref="fieldEmail" :disabled="GET_CHECK_AUTH"></FieldEmail>
+			<FieldEmail ref="fieldEmail" :disabled="isCheck"></FieldEmail>
 
-			<FieldPassword ref="fieldPassword" :disabled="GET_CHECK_AUTH"></FieldPassword>
+			<FieldPassword ref="fieldPassword" :disabled="isCheck"></FieldPassword>
 		</div>
 
-		<div class="card-action" v-if="!GET_CHECK_AUTH">
+		<div class="card-action" v-if="!isCheck">
 			<div>
 				<button class="btn waves-effect waves-light auth-submit" type="submit">
 					Войти
@@ -33,13 +33,13 @@ import messages from '@/utils/messages';
 import FieldEmail from '@/components/app/formAuthRegister/field.email.vue';
 import FieldPassword from '@/components/app/formAuthRegister/field.password.vue';
 
-import { mapGetters, mapActions } from 'vuex';
+import { mapActions, mapMutations } from 'vuex';
 
 export default {
 	name: 'login',
-	computed: {
-		...mapGetters(['GET_CHECK_AUTH']),
-	},
+	data: () => ({
+		isCheck: false,
+	}),
 	components: {
 		FieldEmail,
 		FieldPassword,
@@ -51,7 +51,7 @@ export default {
 	},
 	methods: {
 		...mapActions(['LOGIN']),
-		...mapActions(['GET_AUTH_USER', 'GET_USER']),
+		...mapMutations(['SET_ERROR']),
 
 		async onSubmit() {
 			try {
@@ -63,18 +63,21 @@ export default {
 				const err = res.filter(e => e.status === 'rejected').map(e => e.reason.message);
 
 				if (err.length) {
-					throw new Error(err.join('</br>'));
+					this.SET_ERROR(new Error(err.join('</br>')));
+					return;
 				}
 
 				const [email, password] = res.map(e => e.value);
 
-				await this.LOGIN({ email, password });
+				this.isCheck = true;
 
-				await this.GET_AUTH_USER();
+				await this.LOGIN({ email, password });
 
 				this.$router.push('/');
 			} catch (err) {
 				console.warn(err);
+			} finally {
+				this.isCheck = false;
 			}
 		},
 	},

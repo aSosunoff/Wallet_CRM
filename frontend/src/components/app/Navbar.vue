@@ -17,7 +17,7 @@
 						data-target="dropdown"
 						ref="dropdown"
 					>
-						{{ authUserName }}
+						{{ GET_AUTH_USER_NAME.name || GET_AUTH_USER_NAME.email }}
 						<i class="material-icons right">arrow_drop_down</i>
 					</a>
 
@@ -43,7 +43,7 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 
 export default {
 	data: () => ({
@@ -53,7 +53,7 @@ export default {
 		userName: '',
 	}),
 	computed: {
-		...mapState(['authUserName']),
+		...mapGetters(['GET_AUTH_USER_NAME']),
 	},
 	methods: {
 		...mapActions(['LOGOUT']),

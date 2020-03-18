@@ -2,8 +2,11 @@ export default {
 	state: {
 		isPaddindUpdate: false,
 		isPaddindGetUser: false,
+		authUser: {},
 	},
-	getters: {},
+	getters: {
+		GET_AUTH_USER_NAME: state => state.authUser,
+	},
 	mutations: {
 		SET_PADDING_UPDATE(state, padding) {
 			state.isPaddindUpdate = padding;
@@ -11,12 +14,16 @@ export default {
 		SET_PADDING_GET_USER(state, padding) {
 			state.isPaddindGetUser = padding;
 		},
+		SET_AUTH_USER(state, user) {
+			state.authUser = { ...user };
+		},
+		CLEAR_AUTH_USER(state) {
+			state.authUser = {};
+		},
 	},
 	actions: {
 		async GET_USER({ commit }, { id }) {
 			try {
-				commit('SET_PADDING_GET_USER', true);
-
 				const { data } = await window.axiosTransport.get(`user/${id}`);
 
 				return data;
@@ -24,31 +31,23 @@ export default {
 				const e = new Error(err.response.data);
 				commit('SET_ERROR', e);
 				throw e;
-			} finally {
-				commit('SET_PADDING_GET_USER', false);
 			}
 		},
 		async GET_AUTH_USER({ commit }) {
 			try {
-				commit('SET_PADDING_GET_USER', true);
-
 				const { data } = await window.axiosTransport.get('user/getAuthUser');
 
-				commit('SET_AUTH_USER', data.name || data.email);
+				commit('SET_AUTH_USER', data);
 
 				return data;
 			} catch (err) {
 				const e = new Error(err.response.data);
 				commit('SET_ERROR', e);
 				throw e;
-			} finally {
-				commit('SET_PADDING_GET_USER', false);
 			}
 		},
 		async UPDATE_USER({ commit }, user) {
 			try {
-				commit('SET_PADDING_UPDATE', true);
-
 				await window.axiosTransport.put('user/putUpdateUser', user);
 
 				return true;
@@ -56,8 +55,6 @@ export default {
 				const e = new Error(err.response.data);
 				commit('SET_ERROR', e);
 				throw e;
-			} finally {
-				commit('SET_PADDING_UPDATE', false);
 			}
 		},
 	},

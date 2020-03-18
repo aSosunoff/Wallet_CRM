@@ -22,11 +22,24 @@
 import Navbar from '@/components/app/Navbar.vue';
 import Sidebar from '@/components/app/Sidebar.vue';
 
+import { mapGetters, mapActions } from 'vuex';
+
 export default {
 	name: 'MainLayout',
 	data: () => ({
 		isOpen: true,
 	}),
+	computed: {
+		...mapGetters(['GET_AUTH_USER_NAME']),
+	},
+	methods: {
+		...mapActions(['GET_AUTH_USER']),
+	},
+	async mounted() {
+		if (!Object.keys(this.GET_AUTH_USER_NAME).length) {
+			await this.GET_AUTH_USER();
+		}
+	},
 	components: {
 		Navbar,
 		Sidebar,
