@@ -1,19 +1,23 @@
 <template>
-	<div class="app-main-layout">
-		<Navbar @click="isOpen = !isOpen" />
+	<div>
+		<Loader v-if="loading" />
 
-		<Sidebar v-model="isOpen" />
+		<div v-else class="app-main-layout">
+			<Navbar @click="isOpen = !isOpen" />
 
-		<main class="app-content" :class="{ full: !isOpen }">
-			<div class="app-page">
-				<router-view />
+			<Sidebar v-model="isOpen" />
+
+			<main class="app-content" :class="{ full: !isOpen }">
+				<div class="app-page">
+					<router-view />
+				</div>
+			</main>
+
+			<div class="fixed-action-btn">
+				<router-link class="btn-floating btn-large blue" to="/record">
+					<i class="large material-icons">add</i>
+				</router-link>
 			</div>
-		</main>
-
-		<div class="fixed-action-btn">
-			<router-link class="btn-floating btn-large blue" to="/record">
-				<i class="large material-icons">add</i>
-			</router-link>
 		</div>
 	</div>
 </template>
@@ -28,6 +32,7 @@ export default {
 	name: 'MainLayout',
 	data: () => ({
 		isOpen: true,
+		loading: true,
 	}),
 	computed: {
 		...mapGetters(['GET_AUTH_USER_NAME']),
@@ -39,6 +44,8 @@ export default {
 		if (!Object.keys(this.GET_AUTH_USER_NAME).length) {
 			await this.GET_AUTH_USER();
 		}
+
+		this.loading = false;
 	},
 	components: {
 		Navbar,
