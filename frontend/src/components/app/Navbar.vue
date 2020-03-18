@@ -43,6 +43,8 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
+
 export default {
 	data: () => ({
 		date: new Date(),
@@ -51,12 +53,18 @@ export default {
 		userName: '',
 	}),
 	methods: {
+		...mapActions(['LOGOUT']),
+
 		async logout() {
-			await window.axiosTransport.post('auth/logout');
+			try {
+				await this.LOGOUT();
 
-			sessionStorage.setItem('username', 'Вы не авторизованы');
+				sessionStorage.setItem('username', 'Вы не авторизованы');
 
-			this.$router.push('/login?message=logout');
+				this.$router.push('/login?message=logout');
+			} catch (err) {
+				this.$error(err.message);
+			}
 		},
 	},
 	mounted() {

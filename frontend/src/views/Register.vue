@@ -3,16 +3,16 @@
 		<div class="card-content">
 			<span class="card-title">Регистрация</span>
 
-			<FieldEmail ref="fieldEmail" :disabled="checkForm"></FieldEmail>
+			<FieldEmail ref="fieldEmail" :disabled="GET_CHECK_AUTH"></FieldEmail>
 
-			<FieldPassword ref="fieldPassword" :disabled="checkForm"></FieldPassword>
+			<FieldPassword ref="fieldPassword" :disabled="GET_CHECK_AUTH"></FieldPassword>
 
-			<FieldName ref="fieldName" :disabled="checkForm"></FieldName>
+			<FieldName ref="fieldName" :disabled="GET_CHECK_AUTH"></FieldName>
 
-			<FieldAgree ref="fieldAgree" :disabled="checkForm"></FieldAgree>
+			<FieldAgree ref="fieldAgree" :disabled="GET_CHECK_AUTH"></FieldAgree>
 		</div>
 
-		<div class="card-action" v-if="!checkForm">
+		<div class="card-action" v-if="!GET_CHECK_AUTH">
 			<div>
 				<button class="btn waves-effect waves-light auth-submit" type="submit">
 					Зарегистрироваться
@@ -38,11 +38,13 @@ import FieldPassword from '@/components/app/formAuthRegister/field.password.vue'
 import FieldName from '@/components/app/formAuthRegister/field.name.vue';
 import FieldAgree from '@/components/app/formAuthRegister/field.agree.vue';
 
+import { mapGetters, mapActions } from 'vuex';
+
 export default {
 	name: 'register',
-	data: () => ({
-		checkForm: false,
-	}),
+	computed: {
+		...mapGetters(['GET_CHECK_AUTH']),
+	},
 	components: {
 		FieldEmail,
 		FieldPassword,
@@ -50,6 +52,8 @@ export default {
 		FieldAgree,
 	},
 	methods: {
+		...mapActions(['REGISTER']),
+
 		async onSubmit() {
 			try {
 				const res = await Promise.allSettled([
@@ -65,30 +69,19 @@ export default {
 					throw new Error(err.join('</br>'));
 				}
 
-				const formDataArr = res.map(e => e.value);
+				const [email, password, name] = res.map(e => e.value);
 
-				const formData = {
-					email: formDataArr[0],
-					password: formDataArr[1],
-					name: formDataArr[2],
-					agree: formDataArr[3],
-				};
+				const userName = await this.REGISTER({
+					email,
+					password,
+					name,
+				});
 
-				this.checkForm = true;
-
-				const response = await window.axiosTransport.post('auth/register', formData);
-
-				sessionStorage.setItem('username', response.data);
+				sessionStorage.setItem('username', userName);
 
 				this.$router.push('/');
 			} catch (err) {
-				if (err.response && 'data' in err.response) {
-					this.$error(err.response.data);
-				} else {
-					this.$error(err);
-				}
-			} finally {
-				this.checkForm = false;
+				this.$error(err.message);
 			}
 		},
 	},

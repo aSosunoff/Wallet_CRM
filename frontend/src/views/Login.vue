@@ -3,12 +3,12 @@
 		<div class="card-content">
 			<span class="card-title">Вход на сайт</span>
 
-			<FieldEmail ref="fieldEmail" :disabled="GET_CHECK_LOGIN"></FieldEmail>
+			<FieldEmail ref="fieldEmail" :disabled="GET_CHECK_AUTH"></FieldEmail>
 
-			<FieldPassword ref="fieldPassword" :disabled="GET_CHECK_LOGIN"></FieldPassword>
+			<FieldPassword ref="fieldPassword" :disabled="GET_CHECK_AUTH"></FieldPassword>
 		</div>
 
-		<div class="card-action" v-if="!GET_CHECK_LOGIN">
+		<div class="card-action" v-if="!GET_CHECK_AUTH">
 			<div>
 				<button class="btn waves-effect waves-light auth-submit" type="submit">
 					Войти
@@ -38,7 +38,7 @@ import { mapGetters, mapActions } from 'vuex';
 export default {
 	name: 'login',
 	computed: {
-		...mapGetters(['GET_CHECK_LOGIN']),
+		...mapGetters(['GET_CHECK_AUTH']),
 	},
 	components: {
 		FieldEmail,
