@@ -16,7 +16,7 @@ exports.postLogin = (req, res, next) => {
 
 		req.session.user = user._id;
 
-		res.send(user.name);
+		res.end();
 	});
 };
 
@@ -36,7 +36,7 @@ exports.postRegister = (req, res, next) => {
 
 		req.session.user = user._id;
 
-		res.send(user.name);
+		res.end();
 	});
 };
 
@@ -52,6 +52,6 @@ exports.postLogout = (req, res, next) => {
 			return next(err);
 		}
 
-		res.send();
+		res.end();
 	});
 };

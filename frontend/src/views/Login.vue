@@ -51,6 +51,7 @@ export default {
 	},
 	methods: {
 		...mapActions(['LOGIN']),
+		...mapActions(['GET_AUTH_USER', 'GET_USER']),
 
 		async onSubmit() {
 			try {
@@ -67,12 +68,11 @@ export default {
 
 				const [email, password] = res.map(e => e.value);
 
-				const userName = await this.LOGIN({
-					email,
-					password,
-				});
+				await this.LOGIN({ email, password });
 
-				sessionStorage.setItem('username', userName);
+				const user = await this.GET_AUTH_USER();
+
+				sessionStorage.setItem('username', user.name || user.email);
 
 				this.$router.push('/');
 			} catch (err) {

@@ -7,7 +7,7 @@
 
 			<FieldPassword ref="fieldPassword" :disabled="GET_CHECK_AUTH"></FieldPassword>
 
-			<FieldName ref="fieldName" :disabled="GET_CHECK_AUTH"></FieldName>
+			<input ref="fieldName" type="text" v-model.trim="name" :disabled="GET_CHECK_AUTH" />
 
 			<FieldAgree ref="fieldAgree" :disabled="GET_CHECK_AUTH"></FieldAgree>
 		</div>
@@ -35,31 +35,33 @@
 <script>
 import FieldEmail from '@/components/app/formAuthRegister/field.email.vue';
 import FieldPassword from '@/components/app/formAuthRegister/field.password.vue';
-import FieldName from '@/components/app/formAuthRegister/field.name.vue';
 import FieldAgree from '@/components/app/formAuthRegister/field.agree.vue';
 
 import { mapGetters, mapActions } from 'vuex';
 
 export default {
 	name: 'register',
+	data: () => ({
+		name: '',
+	}),
 	computed: {
 		...mapGetters(['GET_CHECK_AUTH']),
 	},
 	components: {
 		FieldEmail,
 		FieldPassword,
-		FieldName,
 		FieldAgree,
 	},
 	methods: {
 		...mapActions(['REGISTER']),
+		...mapActions(['GET_AUTH_USER']),
 
 		async onSubmit() {
 			try {
 				const res = await Promise.allSettled([
 					this.$refs.fieldEmail.checkValidate(),
 					this.$refs.fieldPassword.checkValidate(),
-					this.$refs.fieldName.checkValidate(),
+					Promise.resolve(this.name),
 					this.$refs.fieldAgree.checkValidate(),
 				]);
 
@@ -71,13 +73,11 @@ export default {
 
 				const [email, password, name] = res.map(e => e.value);
 
-				const userName = await this.REGISTER({
-					email,
-					password,
-					name,
-				});
+				await this.REGISTER({ email, password, name });
 
-				sessionStorage.setItem('username', userName);
+				const user = await this.GET_AUTH_USER();
+
+				sessionStorage.setItem('username', user.name || user.email);
 
 				this.$router.push('/');
 			} catch (err) {

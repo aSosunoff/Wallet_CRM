@@ -14,8 +14,7 @@ module.exports = app => {
 				errorhandlerMiddleware()(err, req, res, next);
 			} else {
 				logger.error(err);
-				err = new HttpError(500);
-				res.sendHttpError(err);
+				res.sendHttpError(new HttpError(500));
 			}
 		}
 	}).use((req, res, next) => {
