@@ -15,10 +15,10 @@
 					</thead>
 
 					<tbody>
-						<tr>
-							<td>руб</td>
-							<td>12121</td>
-							<td>12.12.12</td>
+						<tr v-for="currency in currencies" :key="currency">
+							<td>{{ currency }}</td>
+							<td>{{ (rates[currency]).toFixed(5) }}</td>
+							<td>{{ date | dateFilter('date') }}</td>
 						</tr>
 					</tbody>
 				</table>
@@ -26,3 +26,23 @@
 		</div>
 	</div>
 </template>
+
+<script>
+export default {
+	name: 'home-currency',
+	props: ['rates', 'date'],
+	data: () => ({
+		currencies: ['RUB', 'USD', 'EUR'],
+	}),
+	computed: {
+		base() {
+			return 1000 / (this.rates.RUB / this.rates.EUR);
+		},
+	},
+	methods: {
+		getCurrency(currency) {
+			return Math.floor(this.base * this.rates[currency]);
+		},
+	},
+};
+</script>

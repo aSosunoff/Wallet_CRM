@@ -4,6 +4,7 @@ import App from '@/App.vue';
 import router from '@/router';
 import store from '@/store';
 import dateFilter from '@/filters/date.filter';
+import currencyFilter from '@/filters/currency.filter';
 import messagePlugin from '@/utils/message.plugin';
 import Loader from '@/components/app/Loader.vue';
 import '@/registerServiceWorker';
@@ -19,8 +20,11 @@ window.axiosTransport = axios.create({
 Vue.config.productionTip = false;
 
 Vue.filter('dateFilter', dateFilter);
+Vue.filter('currencyFilter', currencyFilter);
+
 Vue.use(Vuelidate);
 Vue.use(messagePlugin);
+
 Vue.component('Loader', Loader);
 
 new Vue({
