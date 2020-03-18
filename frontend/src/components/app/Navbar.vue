@@ -17,7 +17,7 @@
 						data-target="dropdown"
 						ref="dropdown"
 					>
-						{{ userName }}
+						{{ GET_AUTH_USER }}
 						<i class="material-icons right">arrow_drop_down</i>
 					</a>
 
@@ -43,7 +43,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 
 export default {
 	data: () => ({
@@ -52,14 +52,15 @@ export default {
 		dropdown: null,
 		userName: '',
 	}),
+	computed: {
+		...mapGetters(['GET_AUTH_USER']),
+	},
 	methods: {
 		...mapActions(['LOGOUT']),
 
 		async logout() {
 			try {
 				await this.LOGOUT();
-
-				sessionStorage.setItem('username', 'Вы не авторизованы');
 
 				this.$router.push('/login?message=logout');
 			} catch (err) {
@@ -68,8 +69,6 @@ export default {
 		},
 	},
 	mounted() {
-		this.userName = sessionStorage.getItem('username');
-
 		this.interval = setInterval(() => {
 			this.date = new Date();
 		}, 1000);

@@ -1,14 +1,10 @@
 export default {
 	state: {
-		userAuth: null,
 		isPaddindUpdate: false,
 		isPaddindGetUser: false,
 	},
 	getters: {},
 	mutations: {
-		SET_AUTH_USER(state, user) {
-			state.userAuth = { ...user };
-		},
 		SET_PADDING_UPDATE(state, padding) {
 			state.isPaddindUpdate = padding;
 		},
@@ -38,7 +34,7 @@ export default {
 
 				const { data } = await window.axiosTransport.get('user/getAuthUser');
 
-				commit('SET_AUTH_USER', data);
+				commit('SET_AUTH_USER', data.name || data.email);
 
 				return data;
 			} catch (err) {

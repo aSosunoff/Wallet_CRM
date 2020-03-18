@@ -15,12 +15,12 @@ export default {
 			try {
 				commit('SET_CHECK_AUTH', true);
 
-				const { data } = await window.axiosTransport.post('auth/login', {
+				await window.axiosTransport.post('auth/login', {
 					email,
 					password,
 				});
 
-				return data;
+				return true;
 			} catch (err) {
 				const e = new Error(err.response.data);
 				commit('SET_ERROR', e);
@@ -33,13 +33,13 @@ export default {
 			try {
 				commit('SET_CHECK_AUTH', true);
 
-				const { data } = await window.axiosTransport.post('auth/register', {
+				await window.axiosTransport.post('auth/register', {
 					email,
 					password,
 					name,
 				});
 
-				return data;
+				return true;
 			} catch (err) {
 				const e = new Error(err.response.data);
 				commit('SET_ERROR', e);
@@ -53,6 +53,8 @@ export default {
 				commit('SET_CHECK_AUTH', true);
 
 				await window.axiosTransport.post('auth/logout');
+
+				commit('CLEAR_AUTH_USER');
 
 				return true;
 			} catch (err) {

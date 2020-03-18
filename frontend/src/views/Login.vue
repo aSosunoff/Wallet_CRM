@@ -70,9 +70,7 @@ export default {
 
 				await this.LOGIN({ email, password });
 
-				const user = await this.GET_AUTH_USER();
-
-				sessionStorage.setItem('username', user.name || user.email);
+				await this.GET_AUTH_USER();
 
 				this.$router.push('/');
 			} catch (err) {
