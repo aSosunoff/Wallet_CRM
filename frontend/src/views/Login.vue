@@ -3,12 +3,12 @@
 		<div class="card-content">
 			<span class="card-title">Вход на сайт</span>
 
-			<FieldEmail ref="fieldEmail" :disabled="checkForm"></FieldEmail>
+			<FieldEmail ref="fieldEmail" :disabled="GET_CHECK_LOGIN"></FieldEmail>
 
-			<FieldPassword ref="fieldPassword" :disabled="checkForm"></FieldPassword>
+			<FieldPassword ref="fieldPassword" :disabled="GET_CHECK_LOGIN"></FieldPassword>
 		</div>
 
-		<div class="card-action" v-if="!checkForm">
+		<div class="card-action" v-if="!GET_CHECK_LOGIN">
 			<div>
 				<button class="btn waves-effect waves-light auth-submit" type="submit">
 					Войти
@@ -33,11 +33,13 @@ import messages from '@/utils/messages';
 import FieldEmail from '@/components/app/formAuthRegister/field.email.vue';
 import FieldPassword from '@/components/app/formAuthRegister/field.password.vue';
 
+import { mapGetters, mapActions } from 'vuex';
+
 export default {
 	name: 'login',
-	data: () => ({
-		checkForm: false,
-	}),
+	computed: {
+		...mapGetters(['GET_CHECK_LOGIN']),
+	},
 	components: {
 		FieldEmail,
 		FieldPassword,
@@ -48,6 +50,8 @@ export default {
 		}
 	},
 	methods: {
+		...mapActions(['LOGIN']),
+
 		async onSubmit() {
 			try {
 				const res = await Promise.allSettled([
@@ -61,28 +65,18 @@ export default {
 					throw new Error(err.join('</br>'));
 				}
 
-				const formDataArr = res.map(e => e.value);
+				const [email, password] = res.map(e => e.value);
 
-				const formData = {
-					email: formDataArr[0],
-					password: formDataArr[1],
-				};
+				const userName = await this.LOGIN({
+					email,
+					password,
+				});
 
-				this.checkForm = true;
-
-				const response = await window.axiosTransport.post('auth/login', formData);
-
-				sessionStorage.setItem('username', response.data);
+				sessionStorage.setItem('username', userName);
 
 				this.$router.push('/');
 			} catch (err) {
-				if (err.response && 'data' in err.response) {
-					this.$error(err.response.data);
-				} else {
-					this.$error(err);
-				}
-			} finally {
-				this.checkForm = false;
+				this.$error(err.message);
 			}
 		},
 	},
