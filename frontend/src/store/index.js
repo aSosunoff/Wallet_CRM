@@ -26,7 +26,6 @@ export default new Vuex.Store({
 	},
 	getters: {
 		GET_ERROR: state => state.error,
-		GET_AUTH_USER: state => state.authUserName,
 	},
 	modules: {
 		auth,
