@@ -17,8 +17,8 @@
 </template>
 
 <script>
-import HomeBill from '@/components/app/HomeBill.vue';
-import HomeCurrency from '@/components/app/HomeCurrency.vue';
+import HomeBill from '@/components/HomeBill.vue';
+import HomeCurrency from '@/components/HomeCurrency.vue';
 
 export default {
 	name: 'home',
