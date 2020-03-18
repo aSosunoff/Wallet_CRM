@@ -22,7 +22,9 @@ export default {
 
 				return data;
 			} catch (err) {
-				throw new Error(err.response.data);
+				const e = new Error(err.response.data);
+				commit('SET_ERROR', e);
+				throw e;
 			} finally {
 				commit('SET_CHECK_AUTH', false);
 			}
@@ -39,7 +41,9 @@ export default {
 
 				return data;
 			} catch (err) {
-				throw new Error(err.response.data);
+				const e = new Error(err.response.data);
+				commit('SET_ERROR', e);
+				throw e;
 			} finally {
 				commit('SET_CHECK_AUTH', false);
 			}
@@ -52,7 +56,9 @@ export default {
 
 				return true;
 			} catch (err) {
-				throw new Error(err.response.data);
+				const e = new Error(err.response.data);
+				commit('SET_ERROR', e);
+				throw e;
 			} finally {
 				commit('SET_CHECK_AUTH', false);
 			}

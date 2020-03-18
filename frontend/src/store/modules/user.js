@@ -25,8 +25,9 @@ export default {
 
 				return data;
 			} catch (err) {
-				console.log(err);
-				throw new Error(err.response.data);
+				const e = new Error(err.response.data);
+				commit('SET_ERROR', e);
+				throw e;
 			} finally {
 				commit('SET_PADDING_GET_USER', false);
 			}
@@ -41,7 +42,9 @@ export default {
 
 				return data;
 			} catch (err) {
-				throw new Error(err.response.data);
+				const e = new Error(err.response.data);
+				commit('SET_ERROR', e);
+				throw e;
 			} finally {
 				commit('SET_PADDING_GET_USER', false);
 			}
@@ -54,7 +57,9 @@ export default {
 
 				return true;
 			} catch (err) {
-				throw new Error(err.response.data);
+				const e = new Error(err.response.data);
+				commit('SET_ERROR', e);
+				throw e;
 			} finally {
 				commit('SET_PADDING_UPDATE', false);
 			}

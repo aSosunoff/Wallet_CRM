@@ -63,7 +63,7 @@ export default {
 
 				this.$router.push('/login?message=logout');
 			} catch (err) {
-				this.$error(err.message);
+				console.warn(err);
 			}
 		},
 	},
