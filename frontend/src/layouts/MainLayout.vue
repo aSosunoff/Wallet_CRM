@@ -36,15 +36,9 @@ export default {
 	}),
 	computed: {
 		...mapGetters(['GET_AUTH_USER_NAME']),
-		...mapGetters(['GET_ERROR']),
 	},
 	methods: {
 		...mapActions(['GET_AUTH_USER']),
-	},
-	watch: {
-		GET_ERROR(error) {
-			this.$error(error.message);
-		},
 	},
 	async mounted() {
 		try {

@@ -27,8 +27,7 @@ export default {
 				const { data } = await window.axiosTransport.get(`user/${id}`);
 
 				return data;
-			} catch (err) {
-				const e = new Error(err.response.data);
+			} catch (e) {
 				commit('SET_ERROR', e);
 				throw e;
 			}
@@ -41,15 +40,7 @@ export default {
 
 				return data;
 			} catch (e) {
-				let message = 'Не известная ошибка';
-
-				if (e.code === 'ECONNABORTED') {
-					message = 'Превышен лимит запроса';
-				} else if (e.response && 'data' in e.response) {
-					message = e.response.data;
-				}
-
-				commit('SET_ERROR', new Error(message));
+				commit('SET_ERROR', e);
 				throw e;
 			}
 		},
@@ -58,8 +49,7 @@ export default {
 				await window.axiosTransport.put('user/putUpdateUser', user);
 
 				return true;
-			} catch (err) {
-				const e = new Error(err.response.data);
+			} catch (e) {
 				commit('SET_ERROR', e);
 				throw e;
 			}

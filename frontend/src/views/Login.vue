@@ -60,7 +60,7 @@ export default {
 				const err = res.filter(e => e.status === 'rejected').map(e => e.reason.message);
 
 				if (err.length) {
-					this.SET_ERROR(new Error(err.join('</br>')));
+					this.SET_ERROR(err.join('</br>'));
 					return;
 				}
 
@@ -71,8 +71,8 @@ export default {
 				await this.LOGIN({ email, password });
 
 				this.$router.push('/');
-			} catch (err) {
-				console.warn(err);
+			} catch (e) {
+				/* */
 			} finally {
 				this.isCheck = false;
 			}

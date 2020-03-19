@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { mapActions, mapMutations } from 'vuex';
 
 export default {
 	name: 'register',
@@ -48,6 +48,7 @@ export default {
 	},
 	methods: {
 		...mapActions(['REGISTER']),
+		...mapMutations(['SET_ERROR']),
 
 		async onSubmit() {
 			try {
@@ -61,7 +62,8 @@ export default {
 				const err = res.filter(e => e.status === 'rejected').map(e => e.reason.message);
 
 				if (err.length) {
-					throw new Error(err.join('</br>'));
+					this.SET_ERROR(err.join('</br>'));
+					return;
 				}
 
 				const [email, password, name] = res.map(e => e.value);
@@ -71,8 +73,8 @@ export default {
 				await this.REGISTER({ email, password, name });
 
 				this.$router.push('/');
-			} catch (err) {
-				console.warn(err);
+			} catch (e) {
+				/* */
 			} finally {
 				this.isCheck = false;
 			}

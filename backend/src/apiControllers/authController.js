@@ -1,43 +1,43 @@
 const { HttpError, AuthError } = require('../error');
 const UserModel = require('../models/user');
 
-exports.postLogin = (req, res, next) => {
+exports.postLogin = async (req, res, next) => {
 	let email = req.body.email;
 	let password = req.body.password;
 
-	UserModel.login(email, password, (err, user) => {
-		if (err) {
-			if (err instanceof AuthError) {
-				return next(new HttpError(403, err.message));
-			} else {
-				return next(err);
-			}
-		}
+	try {
+		const user = await UserModel.login(email, password);
 
 		req.session.user = user._id;
 
 		res.end();
-	});
+	} catch (e) {
+		if (e instanceof AuthError) {
+			return next(new HttpError(403, e.message));
+		} else {
+			return next(e);
+		}
+	}
 };
 
-exports.postRegister = (req, res, next) => {
+exports.postRegister = async (req, res, next) => {
 	let email = req.body.email;
 	let password = req.body.password;
 	let name = req.body.name;
 
-	UserModel.register(name, email, password, (err, user) => {
-		if (err) {
-			if (err instanceof AuthError) {
-				return next(new HttpError(401, err.message));
-			} else {
-				return next(err);
-			}
-		}
+	try {
+		const user = await UserModel.register(name, email, password);
 
 		req.session.user = user._id;
 
 		res.end();
-	});
+	} catch (e) {
+		if (e instanceof AuthError) {
+			return next(new HttpError(401, e.message));
+		} else {
+			return next(e);
+		}
+	}
 };
 
 exports.postLogout = (req, res, next) => {

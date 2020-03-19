@@ -13,7 +13,13 @@ export default new Vuex.Store({
 	},
 	mutations: {
 		SET_ERROR(state, error) {
-			state.error = error;
+			let err = error;
+
+			if (typeof err === 'string') {
+				err = new Error(err);
+			}
+
+			state.error = err;
 		},
 		CLEAR_ERROR(state) {
 			state.error = null;
@@ -28,9 +34,7 @@ export default new Vuex.Store({
 				);
 				return data;
 			} catch (e) {
-				if (e.message === 'Network Error') {
-					commit('SET_ERROR', new Error('Не удалось прочитать данные по валютам'));
-				}
+				commit('SET_ERROR', 'Не удалось прочитать данные по валютам');
 
 				throw e;
 			}

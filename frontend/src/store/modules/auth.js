@@ -8,8 +8,7 @@ export default {
 				});
 
 				return true;
-			} catch (err) {
-				const e = new Error(err.response.data);
+			} catch (e) {
 				commit('SET_ERROR', e);
 				throw e;
 			}
@@ -23,8 +22,7 @@ export default {
 				});
 
 				return true;
-			} catch (err) {
-				const e = new Error(err.response.data);
+			} catch (e) {
 				commit('SET_ERROR', e);
 				throw e;
 			}
@@ -36,8 +34,7 @@ export default {
 				commit('CLEAR_AUTH_USER');
 
 				return true;
-			} catch (err) {
-				const e = new Error(err.response.data);
+			} catch (e) {
 				commit('SET_ERROR', e);
 				throw e;
 			}

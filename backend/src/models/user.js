@@ -49,44 +49,40 @@ userSchema.methods.checkPassword = function(password) {
 	return this.encryptPassword(password) === this.hashedPassword;
 };
 
-userSchema.statics.login = function(email, password, callback) {
+userSchema.statics.login = async function(email, password) {
 	const UserModel = this;
 
-	(async () => {
-		let user = await UserModel.findOne({ email });
+	let user = await UserModel.findOne({ email });
 
-		if (!user) {
-			return callback(new AuthError('Вы не зарегистрированы'));
-		}
+	if (!user) {
+		throw new AuthError('Вы не зарегистрированы');
+	}
 
-		if (!user.checkPassword(password)) {
-			return callback(new AuthError('Пароль не верен'));
-		}
+	if (!user.checkPassword(password)) {
+		throw new AuthError('Пароль не верен');
+	}
 
-		return callback(null, user);
-	})();
+	return user;
 };
 
-userSchema.statics.register = function(name, email, password, callback) {
+userSchema.statics.register = async function(name, email, password) {
 	const UserModel = this;
 
-	(async () => {
-		let user = await UserModel.findOne({ email });
+	let user = await UserModel.findOne({ email });
 
-		if (user) {
-			return callback(new AuthError('Пользователь с таким Email существует'));
-		}
+	if (user) {
+		throw new AuthError('Пользователь с таким Email существует');
+	}
 
-		user = new UserModel({
-			name,
-			email,
-			password,
-		});
+	user = new UserModel({
+		name,
+		email,
+		password,
+	});
 
-		await user.save();
+	await user.save();
 
-		return callback(null, user);
-	})();
+	return user;
 };
 
 module.exports = mongoose.model('User', userSchema);
