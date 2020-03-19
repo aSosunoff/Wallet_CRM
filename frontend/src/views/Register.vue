@@ -33,10 +33,6 @@
 </template>
 
 <script>
-import FieldEmail from '@/components/app/formAuthRegister/field.email.vue';
-import FieldPassword from '@/components/app/formAuthRegister/field.password.vue';
-import FieldAgree from '@/components/app/formAuthRegister/field.agree.vue';
-
 import { mapActions } from 'vuex';
 
 export default {
@@ -46,9 +42,9 @@ export default {
 		isCheck: false,
 	}),
 	components: {
-		FieldEmail,
-		FieldPassword,
-		FieldAgree,
+		FieldEmail: () => import('@/components/app/formAuthRegister/field.email.vue'),
+		FieldPassword: () => import('@/components/app/formAuthRegister/field.password.vue'),
+		FieldAgree: () => import('@/components/app/formAuthRegister/field.agree.vue'),
 	},
 	methods: {
 		...mapActions(['REGISTER']),

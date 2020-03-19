@@ -19,9 +19,6 @@
 </template>
 
 <script>
-import HomeBill from '@/components/HomeBill.vue';
-import HomeCurrency from '@/components/HomeCurrency.vue';
-
 import { mapActions } from 'vuex';
 
 export default {
@@ -48,8 +45,8 @@ export default {
 		}
 	},
 	components: {
-		HomeBill,
-		HomeCurrency,
+		HomeBill: () => import('@/components/HomeBill.vue'),
+		HomeCurrency: () => import('@/components/HomeCurrency.vue'),
 	},
 };
 </script>

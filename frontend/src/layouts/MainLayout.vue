@@ -54,6 +54,7 @@ export default {
 
 			this.loading = false;
 		} catch (e) {
+			this.$router.push('/login');
 			/* continue regardless of error */
 		}
 	},

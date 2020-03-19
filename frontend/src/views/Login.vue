@@ -30,9 +30,6 @@
 
 <script>
 import messages from '@/utils/messages';
-import FieldEmail from '@/components/app/formAuthRegister/field.email.vue';
-import FieldPassword from '@/components/app/formAuthRegister/field.password.vue';
-
 import { mapActions, mapMutations } from 'vuex';
 
 export default {
@@ -41,8 +38,8 @@ export default {
 		isCheck: false,
 	}),
 	components: {
-		FieldEmail,
-		FieldPassword,
+		FieldEmail: () => import('@/components/app/formAuthRegister/field.email.vue'),
+		FieldPassword: () => import('@/components/app/formAuthRegister/field.password.vue'),
 	},
 	mounted() {
 		if (messages[this.$route.query.message]) {
