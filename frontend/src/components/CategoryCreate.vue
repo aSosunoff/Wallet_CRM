@@ -26,3 +26,9 @@
 		</div>
 	</div>
 </template>
+
+<script>
+export default {
+	name: 'category-create',
+};
+</script>

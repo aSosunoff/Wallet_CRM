@@ -15,6 +15,7 @@
 
 <script>
 export default {
+	name: 'category',
 	components: {
 		CategoryCreate: () => import('@/components/CategoryCreate'),
 		CategoryEdit: () => import('@/components/CategoryEdit'),
