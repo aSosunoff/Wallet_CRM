@@ -8,17 +8,17 @@
 			<form @submit.prevent="onSubmit">
 				<div class="input-field">
 					<input
-						id="name"
+						id="title"
 						type="text"
-						v-model.trim="name"
+						v-model.trim="title"
 						:class="{
-							invalid: $v.name.$dirty && !$v.name.required,
+							invalid: $v.title.$dirty && !$v.title.required,
 						}"
 					/>
 
-					<label for="name">Название</label>
+					<label for="title">Название</label>
 
-					<small class="helper-text invalid" v-if="$v.name.$dirty && !$v.name.required"
+					<small class="helper-text invalid" v-if="$v.title.$dirty && !$v.title.required"
 						>Необходимо ввести название</small
 					>
 				</div>
@@ -59,26 +59,42 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
 import { required, minValue } from 'vuelidate/lib/validators/';
 
 export default {
 	name: 'category-create',
 	data: () => ({
-		name: '',
+		title: '',
 		limit: 100,
 	}),
 	validations: {
-		name: { required },
+		title: { required },
 		limit: { required, minValue: minValue(100) },
 	},
 	mounted() {
 		window.M.updateTextFields();
 	},
 	methods: {
-		onSubmit() {
-			if (this.$v.$invalid) {
-				this.$v.$touch();
-				this.$error('Не заполнены обязательные поля');
+		...mapActions(['CREATE_CATEGORY']),
+
+		async onSubmit() {
+			try {
+				if (this.$v.$invalid) {
+					this.$v.$touch();
+					return;
+				}
+
+				const formData = {
+					title: this.title,
+					limit: this.limit,
+				};
+
+				await this.CREATE_CATEGORY(formData);
+
+				/* this.$emit('createCategory', ); */
+			} catch (e) {
+				/* continue regardless of error */
 			}
 		},
 	},

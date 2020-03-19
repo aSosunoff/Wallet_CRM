@@ -5,9 +5,15 @@
 		</div>
 		<section>
 			<div class="row">
-				<CategoryCreate />
+				<CategoryCreate @createCategory="createCategory" />
 
 				<CategoryEdit />
+			</div>
+
+			<div class="row">
+				<div class="col s12" v-for="category in categories" :key='category.name'>
+					{{ category }}
+				</div>
 			</div>
 		</section>
 	</div>
@@ -16,9 +22,17 @@
 <script>
 export default {
 	name: 'category',
+	data: () => ({
+		categories: [],
+	}),
 	components: {
 		CategoryCreate: () => import('@/components/CategoryCreate'),
 		CategoryEdit: () => import('@/components/CategoryEdit'),
+	},
+	methods: {
+		createCategory(newCatogory) {
+			this.categories.push(newCatogory);
+		},
 	},
 };
 </script>
