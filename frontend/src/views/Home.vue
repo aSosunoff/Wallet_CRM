@@ -40,8 +40,12 @@ export default {
 		},
 	},
 	async mounted() {
-		this.currency = await this.FETCH_FIXER();
-		this.loading = false;
+		try {
+			this.currency = await this.FETCH_FIXER();
+			this.loading = false;
+		} catch (e) {
+			/* continue regardless of error */
+		}
 	},
 	components: {
 		HomeBill,
