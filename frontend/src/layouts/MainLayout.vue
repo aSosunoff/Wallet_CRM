@@ -36,16 +36,26 @@ export default {
 	}),
 	computed: {
 		...mapGetters(['GET_AUTH_USER_NAME']),
+		...mapGetters(['GET_ERROR']),
 	},
 	methods: {
 		...mapActions(['GET_AUTH_USER']),
 	},
+	watch: {
+		GET_ERROR(error) {
+			this.$error(error.message);
+		},
+	},
 	async mounted() {
-		if (!Object.keys(this.GET_AUTH_USER_NAME).length) {
-			await this.GET_AUTH_USER();
-		}
+		try {
+			if (!Object.keys(this.GET_AUTH_USER_NAME).length) {
+				await this.GET_AUTH_USER();
+			}
 
-		this.loading = false;
+			this.loading = false;
+		} catch (e) {
+			/* continue regardless of error */
+		}
 	},
 	components: {
 		Navbar,
