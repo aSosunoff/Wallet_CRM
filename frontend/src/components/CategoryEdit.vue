@@ -7,11 +7,14 @@
 
 			<form>
 				<div class="input-field">
-					<select ref="categoryList">
+					<select ref="select">
 						<option value="" disabled selected>Выбирите категорию</option>
-						<option v-for="category of categories" :key="category._id" value="category._id">{{
-							category.title
-						}}</option>
+						<option
+							v-for="category of categories"
+							:key="category._id"
+							value="category._id"
+							>{{ category.title }}</option
+						>
 					</select>
 					<label>Выберите категорию</label>
 				</div>
@@ -41,8 +44,16 @@
 export default {
 	name: 'category-edit',
 	props: ['categories'],
+	data: () => ({
+		init_select: null,
+	}),
 	mounted() {
-		window.M.FormSelect.init(this.$refs.categoryList);
+		this.init_select = window.M.FormSelect.init(this.$refs.select);
+	},
+	destroyed() {
+		if (this.init_select && this.init_select.destroy) {
+			this.init_select.destroy();
+		}
 	},
 };
 </script>
