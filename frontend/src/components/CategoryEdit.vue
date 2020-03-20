@@ -9,6 +9,7 @@
 				<div class="input-field">
 					<select ref="select">
 						<option value="" disabled selected>Выбирите категорию</option>
+
 						<option
 							v-for="category of categories"
 							:key="category._id"
@@ -43,7 +44,11 @@
 <script>
 export default {
 	name: 'category-edit',
-	props: ['categories'],
+	props: {
+		categories: {
+			type: Array,
+		},
+	},
 	data: () => ({
 		init_select: null,
 	}),
