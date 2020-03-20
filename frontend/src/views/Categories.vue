@@ -8,15 +8,9 @@
 			<Loader v-if="loading" />
 
 			<div class="row" v-else>
-				<Create @createCategory="createCategory" />
+				<Create />
 
-				<Edit :categories="categories" />
-
-				<div class="row">
-					<div class="col s12" v-for="category in categories" :key="category._id">
-						{{ category.title }} {{ category.limit }} {{ category._id }}
-					</div>
-				</div>
+				<Edit />
 			</div>
 		</section>
 	</div>
@@ -28,11 +22,10 @@ import { mapActions } from 'vuex';
 export default {
 	name: 'category',
 	data: () => ({
-		categories: [],
 		loading: true,
 	}),
 	async mounted() {
-		this.categories = await this.GET_ALL_CATEGORY();
+		await this.GET_ALL_CATEGORY();
 		this.loading = false;
 	},
 	components: {
@@ -41,10 +34,6 @@ export default {
 	},
 	methods: {
 		...mapActions(['GET_ALL_CATEGORY']),
-
-		createCategory(newCatogory) {
-			this.categories.push(newCatogory);
-		},
 	},
 };
 </script>

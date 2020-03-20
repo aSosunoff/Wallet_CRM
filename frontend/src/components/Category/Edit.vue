@@ -5,38 +5,11 @@
 				<h4>Редактировать</h4>
 			</div>
 
-			<form>
-				<div class="input-field">
-					<select ref="select">
-						<option value="" disabled selected>Выбирите категорию</option>
-
-						<option
-							v-for="category of categories"
-							:key="category._id"
-							value="category._id"
-							>{{ category.title }}</option
-						>
-					</select>
-					<label>Выберите категорию</label>
-				</div>
-
-				<div class="input-field">
-					<input type="text" id="name" />
-					<label for="name">Название</label>
-					<span class="helper-text invalid">TITLE</span>
-				</div>
-
-				<div class="input-field">
-					<input id="limit" type="number" />
-					<label for="limit">Лимит</label>
-					<span class="helper-text invalid">LIMIT</span>
-				</div>
-
-				<button class="btn waves-effect waves-light" type="submit">
-					Обновить
-					<i class="material-icons right">send</i>
-				</button>
-			</form>
+			<Form
+				btnSubmitName="Обновить"
+				typeForm="edit"
+				successMessage="Категория была изменена"
+			/>
 		</div>
 	</div>
 </template>
@@ -44,21 +17,8 @@
 <script>
 export default {
 	name: 'category-edit',
-	props: {
-		categories: {
-			type: Array,
-		},
-	},
-	data: () => ({
-		init_select: null,
-	}),
-	mounted() {
-		this.init_select = window.M.FormSelect.init(this.$refs.select);
-	},
-	destroyed() {
-		if (this.init_select && this.init_select.destroy) {
-			this.init_select.destroy();
-		}
+	components: {
+		Form: () => import('@/components/Category/Form'),
 	},
 };
 </script>
