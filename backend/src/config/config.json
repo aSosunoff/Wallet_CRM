@@ -17,5 +17,13 @@
             "httpOnly": true,
             "maxAge": null
         }
+    },
+    "logger": {
+        "skips": [],
+        "level": "debug",
+        "levelFilter": []
+    },
+    "morgan": {
+        "statusCode": 400
     }
 }

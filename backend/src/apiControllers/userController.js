@@ -1,25 +1,30 @@
 const { HttpError, AuthError } = require('../error');
 const UserModel = require('../models/user');
+const logger = require('../libs/logger')(module);
 
-exports.getUser = (req, res, next) => {
-	let id = req.params['id'];
+exports.getUser = async (req, res, next) => {
+	logger.debug('getUser');
 
-	UserModel.findById(id, (err, user) => {
-		if(err) {
-			return next(new HttpError(404, 'Пользователь не найден'));
-		}
+	try {
+		let id = req.params['id'];
 
-		const { _id, email, name } = req.user;
+		const user = await UserModel.findById(id);
+
+		const { _id, email, name } = user;
 
 		res.send({
 			id: _id,
 			email,
 			name,
 		});
-	});
+	} catch (e) {
+		return next(new HttpError(404, 'Пользователь не найден'));
+	}
 };
 
 exports.getAuthUser = (req, res, next) => {
+	logger.debug('getAuthUser');
+
 	const { email, name } = req.user;
 
 	res.send({
@@ -29,19 +34,23 @@ exports.getAuthUser = (req, res, next) => {
 	});
 };
 
-exports.putUpdateUser = (req, res, next) => {
-	let id = req.body.id;
+exports.putUpdateUser = async (req, res, next) => {
+	logger.debug('putUpdateUser');
 
-	UserModel.findOneAndUpdate({_id: id}, {
-		email: req.body.email,
-		name: req.body.name
-	},
-	{new: true},
-	(err, user) => {
-		if(err) {
-			return next(new HttpError(400, 'Ошибка обновления пользователя'));
-		}
+	try {
+		let id = req.body.id;
+
+		const user = await UserModel.findOneAndUpdate(
+			{ _id: id },
+			{
+				email: req.body.email,
+				name: req.body.name,
+			},
+			{ new: true }
+		);
 
 		res.end();
-	});
+	} catch (e) {
+		return next(new HttpError(400, 'Ошибка обновления пользователя'));
+	}
 };

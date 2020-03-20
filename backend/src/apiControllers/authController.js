@@ -1,11 +1,14 @@
 const { HttpError, AuthError } = require('../error');
 const UserModel = require('../models/user');
+const logger = require('../libs/logger')(module);
 
 exports.postLogin = async (req, res, next) => {
-	let email = req.body.email;
-	let password = req.body.password;
+	logger.debug('postLogin');
 
 	try {
+		let email = req.body.email;
+		let password = req.body.password;
+
 		const user = await UserModel.login(email, password);
 
 		req.session.user = user._id;
@@ -21,11 +24,13 @@ exports.postLogin = async (req, res, next) => {
 };
 
 exports.postRegister = async (req, res, next) => {
-	let email = req.body.email;
-	let password = req.body.password;
-	let name = req.body.name;
+	logger.debug('postRegister');
 
 	try {
+		let email = req.body.email;
+		let password = req.body.password;
+		let name = req.body.name;
+
 		const user = await UserModel.register(name, email, password);
 
 		req.session.user = user._id;
@@ -41,6 +46,8 @@ exports.postRegister = async (req, res, next) => {
 };
 
 exports.postLogout = (req, res, next) => {
+	logger.debug('postLogout');
+
 	const sid = req.session.id;
 
 	const io = req.app.get('io');

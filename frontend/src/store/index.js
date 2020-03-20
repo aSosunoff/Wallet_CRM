@@ -4,27 +4,11 @@ import axios from 'axios';
 import auth from './modules/auth';
 import user from './modules/user';
 import category from './modules/category';
+import error from './modules/error';
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
-	state: {
-		error: null,
-	},
-	mutations: {
-		SET_ERROR(state, error) {
-			let err = error;
-
-			if (typeof err === 'string') {
-				err = new Error(err);
-			}
-
-			state.error = err;
-		},
-		CLEAR_ERROR(state) {
-			state.error = null;
-		},
-	},
 	actions: {
 		async FETCH_FIXER({ commit }) {
 			try {
@@ -40,12 +24,10 @@ export default new Vuex.Store({
 			}
 		},
 	},
-	getters: {
-		GET_ERROR: state => state.error,
-	},
 	modules: {
 		auth,
 		user,
 		category,
+		error,
 	},
 });

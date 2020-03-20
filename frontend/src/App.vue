@@ -7,11 +7,12 @@ import { mapGetters } from 'vuex';
 
 export default {
 	computed: {
+		...mapGetters(['GET_ERROR']),
+
 		layout() {
 			const layout = this.$route.meta.layout || 'empty';
 			return `${layout}-layout`;
 		},
-		...mapGetters(['GET_ERROR']),
 	},
 	watch: {
 		GET_ERROR(e) {

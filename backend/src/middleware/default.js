@@ -11,7 +11,7 @@ const config = require('../config');
 
 const sessionStore = require('../libs/sessionStore');
 
-const skip = (req, res) => res.statusCode < 400;
+const skip = (req, res) => res.statusCode < config.get('morgan:statusCode');
 
 module.exports = (app, module) => {
 	const rootDirName = path.parse(module.filename).dir;

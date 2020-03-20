@@ -3,7 +3,6 @@ const cookie = require('cookie');
 const coocieParserMiddleware = require('cookie-parser');
 const sessionStore = require('../libs/sessionStore');
 const HttpError = require('../error').HttpError;
-const logger = require('./log')(module);
 const User = require('../models/user');
 
 async function authSocket(socket, next) {
@@ -25,11 +24,11 @@ async function authSocket(socket, next) {
 
 		await new Promise((resolve, reject) => {
 			if (!session.user) {
-				logger.debug(`Анонимная сессия ${session.id}`);
+				app.logger.debug(`Анонимная сессия ${session.id}`);
 				reject(new HttpError(403, 'Анонимная сессия'));
 			}
 
-			logger.debug(`Подключен пользователь ${session.user}`);
+			app.logger.debug(`Подключен пользователь ${session.user}`);
 
 			User.findById(session.user, (err, user) => {
 				if (err) {
@@ -40,7 +39,7 @@ async function authSocket(socket, next) {
 					reject(new HttpError(403, 'Анонимная сессия'));
 				}
 
-				logger.debug(`Пользователь найден ${user}`);
+				app.logger.debug(`Пользователь найден ${user}`);
 
 				socket.handshake.user = user;
 
@@ -64,7 +63,7 @@ module.exports = server => {
 	io.on('connection', function(socket) {
 		let userName = socket.handshake.user.get('name');
 
-		logger.info(`${userName} connected`);
+		app.logger.info(`${userName} connected`);
 
 		socket.broadcast.emit('join', userName);
 
@@ -74,7 +73,7 @@ module.exports = server => {
 		});
 
 		socket.on('disconnect', function() {
-			logger.info(`user ${userName} disconnected`);
+			app.logger.info(`user ${userName} disconnected`);
 
 			socket.broadcast.emit('leave', userName);
 		});

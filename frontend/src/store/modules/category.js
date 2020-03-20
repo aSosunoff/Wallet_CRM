@@ -11,6 +11,7 @@ export default {
 				return true;
 			} catch (e) {
 				commit('SET_ERROR', e);
+
 				throw e;
 			}
 		},

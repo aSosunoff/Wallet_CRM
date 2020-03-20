@@ -1,5 +1,5 @@
 const { HttpError } = require('../error');
-const errorhandlerMiddleware = require('errorhandler');
+const logger = require('../libs/logger')(module);
 
 module.exports = app => {
 	app.use((err, req, res, next) => {
@@ -10,15 +10,9 @@ module.exports = app => {
 		if (err instanceof HttpError) {
 			res.sendHttpError(err);
 		} else {
-			if (app.get('env') == 'development') {
-				errorhandlerMiddleware()(err, req, res, next);
-			} else {
-				logger.error(err);
-				res.sendHttpError(new HttpError(500));
-			}
+			logger.error(err);
+			res.sendHttpError(new HttpError(500));
 		}
-	}).use((req, res, next) => {
-		res.status(404);
 	});
 };
 
