@@ -1,9 +1,9 @@
 const crypto = require('crypto');
 const mongoose = require('../libs/mongoose');
+const CategodyModel = require('../models/category');
 const { AuthError } = require('../error');
-const Schema = mongoose.Schema;
 
-const userSchema = new Schema({
+const userSchema = new mongoose.Schema({
 	email: {
 		type: String,
 		unique: true,
@@ -25,6 +25,12 @@ const userSchema = new Schema({
 		type: Date,
 		default: Date.now,
 	},
+	categories: [
+		{
+			type: mongoose.Schema.Types.ObjectId,
+			ref: 'Category',
+		},
+	],
 });
 
 userSchema.methods.encryptPassword = function(password) {
@@ -79,6 +85,18 @@ userSchema.statics.register = async function(name, email, password) {
 		email,
 		password,
 	});
+
+	await user.save();
+
+	return user;
+};
+
+userSchema.statics.pushCategory = async function(category) {
+	const UserModel = this;
+
+	const user = await UserModel.findOne({_id: category.id_user._id});
+
+	user.categories.push(category);
 
 	await user.save();
 

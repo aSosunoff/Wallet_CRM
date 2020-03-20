@@ -85,14 +85,16 @@ export default {
 					return;
 				}
 
-				const formData = {
+				const idСatalog = await this.CREATE_CATEGORY({
 					title: this.title,
 					limit: this.limit,
-				};
+				});
 
-				await this.CREATE_CATEGORY(formData);
-
-				/* this.$emit('createCategory', ); */
+				this.$emit('createCategory', {
+					_id: idСatalog,
+					title: this.title,
+					limit: this.limit,
+				});
 			} catch (e) {
 				/* continue regardless of error */
 			}

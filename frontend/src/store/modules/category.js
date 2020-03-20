@@ -1,14 +1,13 @@
 export default {
 	actions: {
-		async CREATE_CATEGORY({ commit, getters }, { title, limit }) {
+		async CREATE_CATEGORY({ commit }, { title, limit }) {
 			try {
-				await window.axiosTransport.post('category/create', {
-					id_user: getters.GET_AUTH_USER_NAME.id,
+				const { data } = await window.axiosTransport.post('category/create', {
 					title,
 					limit,
 				});
 
-				return true;
+				return data;
 			} catch (e) {
 				commit('SET_ERROR', e);
 

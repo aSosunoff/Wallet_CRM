@@ -27,6 +27,21 @@ class AuthError extends Error {
 	}
 }
 
+class CategoryError extends Error {
+	constructor(message) {
+		super(message || http.STATUS_CODES[status] || 'Error');
+		Error.captureStackTrace(this, AuthError);
+
+		this.name = 'CategoryError';
+	}
+
+	toString() {
+		return this.message;
+	}
+}
+
+module.exports.CategoryError = CategoryError;
+
 module.exports.AuthError = AuthError;
 
 module.exports.HttpError = HttpError;

@@ -11,8 +11,8 @@
 			</div>
 
 			<div class="row">
-				<div class="col s12" v-for="category in categories" :key='category.name'>
-					{{ category }}
+				<div class="col s12" v-for="category in categories" :key='category._id'>
+					{{ category.title }} {{ category.limit }} {{ category._id }}
 				</div>
 			</div>
 		</section>

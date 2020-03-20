@@ -2,8 +2,6 @@ export default {
 	actions: {
 		async LOGIN({ commit }, { email, password }) {
 			try {
-				console.log(email, password);
-
 				await window.axiosTransport.post('auth/login', {
 					email,
 					password,
