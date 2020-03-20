@@ -62,12 +62,12 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex';
+import { mapGetters } from 'vuex';
 import { required, minValue } from 'vuelidate/lib/validators/';
 
 export default {
 	name: 'category-form',
-	props: ['btnSubmitName', 'typeForm', 'successMessage'],
+	props: ['btnSubmitName', 'typeForm'],
 	data: () => ({
 		id: null,
 		title: '',
@@ -91,38 +91,23 @@ export default {
 		}
 	},
 	methods: {
-		...mapActions(['CREATE_CATEGORY', 'EDIT_CATEGORY']),
-
-		async onSubmit() {
+		onSubmit() {
 			try {
 				if (this.$v.$invalid) {
 					this.$v.$touch();
 					return;
 				}
 
-				switch (this.typeForm) {
-				case 'create':
-					await this.CREATE_CATEGORY({
-						title: this.title,
-						limit: this.limit,
-					});
-					break;
-				case 'edit':
-					await this.EDIT_CATEGORY({
-						id: this.id,
-						title: this.title,
-						limit: this.limit,
-					});
-					break;
-				default:
-					throw new Error('Форма работает на создание и обновление');
-				}
+				this.$emit('onSubmit', {
+					id: this.id,
+					title: this.title,
+					limit: this.limit,
+				});
 
 				this.title = '';
 				this.limit = 100;
 				this.id = null;
 				this.$v.$reset();
-				this.$message(this.successMessage);
 			} catch (e) {
 				/* continue regardless of error */
 			}

@@ -8,17 +8,27 @@
 			<Form
 				btnSubmitName="Обновить"
 				typeForm="edit"
-				successMessage="Категория была изменена"
+				@onSubmit="onSubmit"
 			/>
 		</div>
 	</div>
 </template>
 
 <script>
+import { mapActions } from 'vuex';
+
 export default {
 	name: 'category-edit',
 	components: {
 		Form: () => import('@/components/Category/Form'),
+	},
+	methods: {
+		...mapActions(['EDIT_CATEGORY']),
+
+		async onSubmit(category) {
+			await this.EDIT_CATEGORY(category);
+			this.$message('Категория была изменена');
+		},
 	},
 };
 </script>
