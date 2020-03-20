@@ -1,16 +1,10 @@
 <template>
-	<div class="col s12 m6">
-		<div>
-			<div class="page-subtitle">
-				<h4>Создать</h4>
-			</div>
-
-			<Form
-				btnSubmitName="Создать"
-				typeForm="create"
-				@onSubmit="onSubmit"
-			/>
+	<div>
+		<div class="page-subtitle">
+			<h4>Создать</h4>
 		</div>
+
+		<Form btnSubmitName="Создать" typeForm="create" @onSubmit="onSubmit" />
 	</div>
 </template>
 

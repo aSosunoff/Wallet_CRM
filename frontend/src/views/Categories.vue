@@ -8,16 +8,23 @@
 			<Loader v-if="loading" />
 
 			<div class="row" v-else>
-				<Create />
+				<div
+					class="col s12"
+					:class="{ m6: GET_CATEGORIES.length > 0, m12: GET_CATEGORIES.length == 0 }"
+				>
+					<Create />
+				</div>
 
-				<Edit />
+				<div class="col s12 m6">
+					<Edit v-if="GET_CATEGORIES.length" />
+				</div>
 			</div>
 		</section>
 	</div>
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 
 export default {
 	name: 'category',
@@ -27,6 +34,9 @@ export default {
 	async mounted() {
 		await this.GET_ALL_CATEGORY();
 		this.loading = false;
+	},
+	computed: {
+		...mapGetters(['GET_CATEGORIES']),
 	},
 	components: {
 		Create: () => import('@/components/Category/Create'),

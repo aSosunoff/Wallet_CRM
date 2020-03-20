@@ -9,6 +9,7 @@ export default {
 		UPDATE_CATEGORY(state, category) {
 			state.categories.splice(
 				state.categories.findIndex(e => e.id === category.id),
+				1,
 				category,
 			);
 		},

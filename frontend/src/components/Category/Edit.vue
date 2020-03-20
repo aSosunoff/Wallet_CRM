@@ -1,18 +1,16 @@
 <template>
-	<div class="col s12 m6">
-		<div>
-			<div class="page-subtitle">
-				<h4>Редактировать</h4>
-			</div>
-
-			<Form
-				btnSubmitName="Обновить"
-				typeForm="edit"
-				@onSubmit="onSubmit"
-				:current_id="id"
-				:key="id"
-			/>
+	<div>
+		<div class="page-subtitle">
+			<h4>Редактировать</h4>
 		</div>
+
+		<Form
+			btnSubmitName="Обновить"
+			typeForm="edit"
+			@onSubmit="onSubmit"
+			:current_id="id"
+			:key="id + updateCount"
+		/>
 	</div>
 </template>
 
@@ -23,6 +21,7 @@ export default {
 	name: 'category-edit',
 	data: () => ({
 		id: null,
+		updateCount: 0,
 	}),
 	components: {
 		Form: () => import('@/components/Category/Form'),
@@ -32,6 +31,7 @@ export default {
 
 		async onSubmit(category) {
 			await this.EDIT_CATEGORY(category);
+			this.updateCount += 1;
 			this.$message('Категория была изменена');
 		},
 	},
