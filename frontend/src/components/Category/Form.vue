@@ -67,7 +67,7 @@ import { required, minValue } from 'vuelidate/lib/validators/';
 
 export default {
 	name: 'category-form',
-	props: ['btnSubmitName', 'typeForm'],
+	props: ['btnSubmitName', 'typeForm', 'current_id'],
 	data: () => ({
 		id: null,
 		title: '',
@@ -81,8 +81,26 @@ export default {
 		title: { required },
 		limit: { required, minValue: minValue(100) },
 	},
-	mounted() {
+	watch: {
+		id(id) {
+			const { title, limit } = this.GET_CATEGORIES.find(e => e.id === id);
+			this.id = id;
+			this.title = title;
+			this.limit = limit;
+		},
+	},
+	async mounted() {
+		if (this.current_id) {
+			const { id, title, limit } = this.GET_CATEGORIES.find(e => e.id === this.current_id);
+			this.id = id;
+			this.title = title;
+			this.limit = limit;
+		}
+
+		await this.$nextTick();
+
 		window.M.updateTextFields();
+
 		this.init_select = window.M.FormSelect.init(this.$refs.select);
 	},
 	destroyed() {
@@ -104,10 +122,12 @@ export default {
 					limit: this.limit,
 				});
 
-				this.title = '';
-				this.limit = 100;
-				this.id = null;
-				this.$v.$reset();
+				if (this.typeForm === 'create') {
+					this.id = null;
+					this.title = '';
+					this.limit = 100;
+					this.$v.$reset();
+				}
 			} catch (e) {
 				/* continue regardless of error */
 			}
