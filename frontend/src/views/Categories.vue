@@ -8,9 +8,9 @@
 			<Loader v-if="loading" />
 
 			<div class="row" v-else>
-				<CategoryCreate @createCategory="createCategory" />
+				<Create @createCategory="createCategory" />
 
-				<CategoryEdit :categories="categories" />
+				<Edit :categories="categories" />
 
 				<div class="row">
 					<div class="col s12" v-for="category in categories" :key="category._id">
@@ -36,8 +36,8 @@ export default {
 		this.loading = false;
 	},
 	components: {
-		CategoryCreate: () => import('@/components/CategoryCreate'),
-		CategoryEdit: () => import('@/components/CategoryEdit'),
+		Create: () => import('@/components/Category/Create'),
+		Edit: () => import('@/components/Category/Edit'),
 	},
 	methods: {
 		...mapActions(['GET_ALL_CATEGORY']),

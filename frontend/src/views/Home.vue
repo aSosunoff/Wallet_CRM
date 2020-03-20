@@ -11,9 +11,9 @@
 		<Loader v-if="loading" />
 
 		<div v-else class="row">
-			<HomeBill :rates="currency.rates" />
+			<Bill :rates="currency.rates" />
 
-			<HomeCurrency :rates="currency.rates" :date="currency.date" />
+			<Currency :rates="currency.rates" :date="currency.date" />
 		</div>
 	</div>
 </template>
@@ -45,8 +45,8 @@ export default {
 		}
 	},
 	components: {
-		HomeBill: () => import('@/components/HomeBill.vue'),
-		HomeCurrency: () => import('@/components/HomeCurrency.vue'),
+		Bill: () => import('@/components/Home/Bill.vue'),
+		Currency: () => import('@/components/Home/Currency.vue'),
 	},
 };
 </script>
