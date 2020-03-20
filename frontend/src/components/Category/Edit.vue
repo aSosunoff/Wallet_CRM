@@ -9,7 +9,7 @@
 			typeForm="edit"
 			@onSubmit="onSubmit"
 			:current_id="id"
-			:key="id + updateCount"
+			:key="id + updateCount + GET_CATEGORIES.length"
 		/>
 	</div>
 </template>
