@@ -24,3 +24,19 @@ exports.postCreate = async (req, res, next) => {
 		}
 	}
 };
+
+exports.getAllListCategory = async (req, res, next) => {
+	logger.debug('getAllListCategory');
+
+	try {
+		const categories = await CategodyModel.find();
+
+		res.send(categories.map(e => e.toObject()));
+	} catch (e) {
+		if (e instanceof CategoryError) {
+			return next(new HttpError(403, e.message));
+		} else {
+			return next(e);
+		}
+	}
+};

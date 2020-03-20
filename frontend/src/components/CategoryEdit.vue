@@ -7,8 +7,11 @@
 
 			<form>
 				<div class="input-field">
-					<select>
-						<option>Category</option>
+					<select ref="categoryList">
+						<option value="" disabled selected>Выбирите категорию</option>
+						<option v-for="category of categories" :key="category._id" value="category._id">{{
+							category.title
+						}}</option>
 					</select>
 					<label>Выберите категорию</label>
 				</div>
@@ -37,5 +40,9 @@
 <script>
 export default {
 	name: 'category-edit',
+	props: ['categories'],
+	mounted() {
+		window.M.FormSelect.init(this.$refs.categoryList);
+	},
 };
 </script>
