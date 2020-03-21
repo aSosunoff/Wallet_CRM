@@ -3,8 +3,6 @@ const UserModel = require('../models/user');
 const logger = require('../libs/logger')(module);
 
 exports.postLogin = async (req, res, next) => {
-	logger.debug('postLogin');
-
 	try {
 		let email = req.body.email;
 		let password = req.body.password;
@@ -24,8 +22,6 @@ exports.postLogin = async (req, res, next) => {
 };
 
 exports.postRegister = async (req, res, next) => {
-	logger.debug('postRegister');
-
 	try {
 		let email = req.body.email;
 		let password = req.body.password;
@@ -46,8 +42,6 @@ exports.postRegister = async (req, res, next) => {
 };
 
 exports.postLogout = (req, res, next) => {
-	logger.debug('postLogout');
-
 	const sid = req.session.id;
 
 	const io = req.app.get('io');

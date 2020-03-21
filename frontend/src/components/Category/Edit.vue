@@ -4,43 +4,71 @@
 			<h4>Редактировать</h4>
 		</div>
 
-		<Form
-			btnSubmitName="Обновить"
-			typeForm="edit"
-			@onSubmit="onSubmit"
-			:current_id="id"
-			:key="id + updateCount + GET_CATEGORIES.length"
-		/>
+		<form @submit.prevent="onSubmit">
+			<FieldCategories ref="fieldCategories" />
+
+			<FieldTitle ref="fieldTitle" />
+
+			<FieldLimit ref="fieldLimit" />
+
+			<button class="btn waves-effect waves-light" type="submit">
+				Обновить
+				<i class="material-icons right">send</i>
+			</button>
+		</form>
 	</div>
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex';
+import { mapActions, mapGetters, mapMutations } from 'vuex';
 
 export default {
 	name: 'category-edit',
-	data: () => ({
-		id: null,
-		updateCount: 0,
-	}),
 	components: {
-		Form: () => import('@/components/Category/Form'),
+		FieldCategories: () => import('@/components/Category/field.categories.vue'),
+		FieldTitle: () => import('@/components/Category/field.title.vue'),
+		FieldLimit: () => import('@/components/Category/field.limit.vue'),
+	},
+	computed: {
+		...mapGetters(['GET_CURRENT']),
+	},
+	watch: {
+		GET_CURRENT(category) {
+			this.$refs.fieldTitle.title = category.title;
+			this.$refs.fieldLimit.limit = category.limit;
+		},
 	},
 	methods: {
 		...mapActions(['EDIT_CATEGORY']),
+		...mapMutations(['SET_ERROR']),
 
-		async onSubmit(category) {
-			await this.EDIT_CATEGORY(category);
-			this.updateCount += 1;
-			this.$message('Категория была изменена');
+		async onSubmit() {
+			try {
+				const res = await Promise.allSettled([
+					this.$refs.fieldCategories.checkValidate(),
+					this.$refs.fieldTitle.checkValidate(),
+					this.$refs.fieldLimit.checkValidate(),
+				]);
+
+				const err = res.filter(e => e.status === 'rejected').map(e => e.reason.message);
+
+				if (err.length) {
+					throw new Error(err.join('</br>'));
+				}
+
+				const [id, title, limit] = res.map(e => e.value);
+
+				await this.EDIT_CATEGORY({
+					id,
+					title,
+					limit,
+				});
+
+				this.$message('Категория была обновлена');
+			} catch (e) {
+				this.SET_ERROR(e);
+			}
 		},
-	},
-	computed: {
-		...mapGetters(['GET_CATEGORIES']),
-	},
-	mounted() {
-		const { id } = this.GET_CATEGORIES[0];
-		this.id = id;
 	},
 };
 </script>

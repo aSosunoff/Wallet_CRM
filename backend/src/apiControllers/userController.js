@@ -3,8 +3,6 @@ const UserModel = require('../models/user');
 const logger = require('../libs/logger')(module);
 
 exports.getUser = async (req, res, next) => {
-	logger.debug('getUser');
-
 	try {
 		let id = req.params['id'];
 
@@ -23,8 +21,6 @@ exports.getUser = async (req, res, next) => {
 };
 
 exports.getAuthUser = (req, res, next) => {
-	logger.debug('getAuthUser');
-
 	const { email, name } = req.user;
 
 	res.send({
@@ -35,8 +31,6 @@ exports.getAuthUser = (req, res, next) => {
 };
 
 exports.putUpdateUser = async (req, res, next) => {
-	logger.debug('putUpdateUser');
-
 	try {
 		let id = req.body.id;
 

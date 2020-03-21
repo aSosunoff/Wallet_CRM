@@ -24,6 +24,6 @@
         "levelFilter": []
     },
     "morgan": {
-        "statusCode": 400
+        "statusCode": 0
     }
 }

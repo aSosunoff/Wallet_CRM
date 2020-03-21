@@ -4,8 +4,6 @@ const UserModel = require('../models/user');
 const logger = require('../libs/logger')(module);
 
 exports.postCreate = async (req, res, next) => {
-	logger.debug('postCreate');
-
 	try {
 		const category = await CategodyModel.createNew({
 			id_user: req.user._id,
@@ -26,8 +24,6 @@ exports.postCreate = async (req, res, next) => {
 };
 
 exports.getAllListCategory = async (req, res, next) => {
-	logger.debug('getAllListCategory');
-
 	try {
 		const categories = await CategodyModel.find();
 
@@ -42,8 +38,6 @@ exports.getAllListCategory = async (req, res, next) => {
 };
 
 exports.postedit = async (req, res, next) => {
-	logger.debug('postedit');
-
 	try {
 		await CategodyModel.findByIdAndUpdate(
 			{ _id: req.body.id },

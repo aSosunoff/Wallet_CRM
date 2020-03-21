@@ -1,12 +1,14 @@
 export default {
 	state: {
 		categories: null,
+		current: null,
 	},
 	mutations: {
 		ADD_CATEGORY(state, category) {
 			state.categories.push(category);
 		},
 		UPDATE_CATEGORY(state, category) {
+			state.current = category;
 			state.categories.splice(
 				state.categories.findIndex(e => e.id === category.id),
 				1,
@@ -16,9 +18,13 @@ export default {
 		SET_CATEGORY(state, categories) {
 			state.categories = categories;
 		},
+		SELECT_CATEGORY_CURRENT(state, category) {
+			state.current = category;
+		},
 	},
 	getters: {
 		GET_CATEGORIES: state => state.categories,
+		GET_CURRENT: state => state.current,
 	},
 	actions: {
 		async CREATE_CATEGORY({ commit }, { title, limit }) {
