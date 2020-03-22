@@ -6,6 +6,14 @@
 
 		<Loader v-if="loading" />
 
+		<p class="center" v-else-if="GET_CATEGORIES && !GET_CATEGORIES.length">
+			Категорий не существует
+			<router-link to="/categories" class="waves-effect waves-light btn">
+				<i class="material-icons left">add_box</i>
+				Добавить категорию</router-link
+			>
+		</p>
+
 		<form class="form" v-else>
 			<div class="input-field">
 				<select ref="select">
