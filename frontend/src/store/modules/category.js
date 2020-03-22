@@ -68,9 +68,9 @@ export default {
 			try {
 				const { data } = await window.axiosTransport.get('category/get-all-category');
 
-				commit('SET_CATEGORY', data);
+				commit('SET_CATEGORY', [...data]);
 
-				return true;
+				return data;
 			} catch (e) {
 				commit('SET_ERROR', e);
 

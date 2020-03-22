@@ -19,3 +19,13 @@ exports.postCreate = async (req, res, next) => {
 		}
 	}
 };
+
+exports.getAllListRecords = async (req, res, next) => {
+	try {
+		const records = await RecordModel.find();
+
+		res.send(records.map(e => e.toObject()).map(e => ({ ...e, id: e._id })));
+	} catch (e) {
+		return next(e);
+	}
+};

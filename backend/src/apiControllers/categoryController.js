@@ -32,11 +32,7 @@ exports.getAllListCategory = async (req, res, next) => {
 
 		res.send(categories.map(e => e.toObject()).map(e => ({ ...e, id: e._id })));
 	} catch (e) {
-		if (e instanceof CategoryError) {
-			return next(new HttpError(403, e.message));
-		} else {
-			return next(e);
-		}
+		return next(e);
 	}
 };
 

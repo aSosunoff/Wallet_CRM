@@ -1,25 +1,14 @@
 export default {
 	state: {
-		records: [],
+		records: null,
 	},
 	mutations: {
 		ADD_RECORD(state, record) {
 			state.records.push(record);
 		},
-		/* UPDATE_CATEGORY(state, category) {
-			state.current = category;
-			state.categories.splice(
-				state.categories.findIndex(e => e.id === category.id),
-				1,
-				category,
-			);
+		SET_RECORD(state, records) {
+			state.records = records;
 		},
-		SET_CATEGORY(state, categories) {
-			state.categories = categories;
-		},
-		SELECT_CATEGORY_CURRENT(state, category) {
-			state.current = category;
-		}, */
 	},
 	getters: {
 		GET_RECORDS: state => state.records,
@@ -43,39 +32,18 @@ export default {
 				throw e;
 			}
 		},
-		/* async EDIT_CATEGORY({ commit }, { id, title, limit }) {
+		async GET_ALL_RECORDS({ commit }) {
 			try {
-				await window.axiosTransport.post('category/edit', {
-					id,
-					title,
-					limit,
-				});
+				const { data } = await window.axiosTransport.get('record/get-all-records');
 
-				commit('UPDATE_CATEGORY', {
-					id,
-					title,
-					limit,
-				});
+				commit('SET_RECORD', [...data]);
 
-				return true;
+				return data;
 			} catch (e) {
 				commit('SET_ERROR', e);
 
 				throw e;
 			}
 		},
-		async GET_ALL_CATEGORY({ commit }) {
-			try {
-				const { data } = await window.axiosTransport.get('category/get-all-category');
-
-				commit('SET_CATEGORY', data);
-
-				return true;
-			} catch (e) {
-				commit('SET_ERROR', e);
-
-				throw e;
-			}
-		}, */
 	},
 };

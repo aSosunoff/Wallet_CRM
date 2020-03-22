@@ -158,7 +158,7 @@ export default {
 		},
 	},
 	methods: {
-		...mapActions(['GET_ALL_CATEGORY', 'CREATE_RECORD']),
+		...mapActions(['GET_ALL_CATEGORY', 'CREATE_RECORD', 'GET_ALL_RECORDS']),
 		...mapMutations(['SET_ERROR']),
 
 		recordReset() {
@@ -190,6 +190,8 @@ export default {
 	},
 	async mounted() {
 		await this.GET_ALL_CATEGORY();
+
+		await this.GET_ALL_RECORDS();
 
 		this.loading = false;
 
