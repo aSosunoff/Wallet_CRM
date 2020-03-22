@@ -21,12 +21,18 @@ exports.getUser = async (req, res, next) => {
 };
 
 exports.getAuthUser = (req, res, next) => {
-	const { email, name } = req.user;
-
-	res.send({
-		id: req.session.user,
+	const {
+		_id,
 		email,
 		name,
+		bill,
+	} = req.user;
+
+	res.send({
+		id: _id.toString(),
+		email,
+		name,
+		bill,
 	});
 };
 

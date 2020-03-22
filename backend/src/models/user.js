@@ -25,6 +25,10 @@ const userSchema = new mongoose.Schema({
 		type: Date,
 		default: Date.now,
 	},
+	bill: {
+		type: Number,
+		default: 10000,
+	},
 	categories: [
 		{
 			type: mongoose.Schema.Types.ObjectId,

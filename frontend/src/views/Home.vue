@@ -38,8 +38,7 @@ export default {
 	},
 	async mounted() {
 		try {
-			this.currency = await this.FETCH_FIXER();
-			this.loading = false;
+			await this.refresh();
 		} catch (e) {
 			/* continue regardless of error */
 		}

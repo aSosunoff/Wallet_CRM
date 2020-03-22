@@ -21,7 +21,8 @@ export default {
 	}),
 	computed: {
 		base() {
-			return 1000 / (this.rates.RUB / this.rates.EUR);
+			console.log(1);
+			return 10000 / (this.rates.RUB / this.rates.EUR);
 		},
 	},
 	methods: {
