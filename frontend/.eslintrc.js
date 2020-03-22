@@ -3,10 +3,7 @@ module.exports = {
 	env: {
 		node: true,
 	},
-	extends: [
-		'plugin:vue/essential',
-		'@vue/airbnb',
-	],
+	extends: ['plugin:vue/essential', '@vue/airbnb'],
 	parserOptions: {
 		parser: 'babel-eslint',
 	},
@@ -17,5 +14,6 @@ module.exports = {
 		'no-param-reassign': [2, { props: false }],
 		'arrow-parens': ['error', 'as-needed'],
 		'no-tabs': 0,
+		'object-curly-newline': 'off',
 	},
 };
