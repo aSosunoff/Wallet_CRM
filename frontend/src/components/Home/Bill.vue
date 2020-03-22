@@ -13,6 +13,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+
 export default {
 	name: 'home-bill',
 	props: ['rates'],
@@ -20,9 +22,10 @@ export default {
 		currencies: ['RUB', 'USD', 'EUR'],
 	}),
 	computed: {
+		...mapGetters(['GET_AUTH_USER_NAME']),
+
 		base() {
-			console.log(1);
-			return 10000 / (this.rates.RUB / this.rates.EUR);
+			return this.GET_AUTH_USER_NAME.bill / (this.rates.RUB / this.rates.EUR);
 		},
 	},
 	methods: {
