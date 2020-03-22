@@ -23,12 +23,13 @@
         "delete": "^1.1.0",
         "eslint": "^6.8.0",
         "eslint-config-airbnb-base": "^14.1.0",
-        "eslint-plugin-import": "^2.20.1"
+        "eslint-plugin-import": "^2.20.1",
+        "nodemon": "^2.0.2"
     },
     "scripts": {
         "lint": "./node_modules/.bin/eslint",
         "prod": "SET NODE_ENV=production&& node src/app.js",
-        "serve": "SET NODE_ENV=development&& node src/app.js",
+        "serve": "SET NODE_ENV=development&& nodemon src/app.js",
         "gulp": "node_modules/.bin/gulp"
     },
     "keywords": [],

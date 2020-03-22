@@ -13,7 +13,7 @@ require('./routes')(app);
 require('./middleware/error')(app);
 
 app.use('/', (req, res) => {
-	res.end();
+	res.send('<a href="http://localhost:3001/">Войти на сайт</a>');
 });
 
 server.listen(config.get('port'), () => {
