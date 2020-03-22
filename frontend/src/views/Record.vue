@@ -18,9 +18,10 @@
 			<div class="input-field">
 				<select
 					ref="select"
-					v-model="record.id_category"
+					v-model="recordNew.idCategory"
 					:class="{
-						invalid: $v.record.id_category.$dirty && !$v.record.id_category.required,
+						invalid:
+							$v.recordNew.idCategory.$dirty && !$v.recordNew.idCategory.required,
 					}"
 				>
 					<option value="" disabled selected>Выбирите категорию</option>
@@ -37,7 +38,7 @@
 
 				<small
 					class="helper-text invalid"
-					v-if="$v.record.id_category.$dirty && !$v.record.id_category.required"
+					v-if="$v.recordNew.idCategory.$dirty && !$v.recordNew.idCategory.required"
 					>Необходимо выбрать категорию</small
 				>
 			</div>
@@ -49,7 +50,7 @@
 						name="type"
 						type="radio"
 						:value="el.value"
-						v-model="record.type"
+						v-model="recordNew.type"
 					/>
 					<span>{{ el.title }}</span>
 				</label>
@@ -59,11 +60,11 @@
 				<input
 					id="amount"
 					type="number"
-					v-model.number="record.amount"
+					v-model.number="recordNew.amount"
 					:class="{
 						invalid:
-							($v.record.amount.$dirty && !$v.record.amount.minValue) ||
-							($v.record.amount.$dirty && !$v.record.amount.required),
+							($v.recordNew.amount.$dirty && !$v.recordNew.amount.minValue) ||
+							($v.recordNew.amount.$dirty && !$v.recordNew.amount.required),
 					}"
 				/>
 
@@ -71,14 +72,14 @@
 
 				<small
 					class="helper-text invalid"
-					v-if="$v.record.amount.$dirty && !$v.record.amount.minValue"
+					v-if="$v.recordNew.amount.$dirty && !$v.recordNew.amount.minValue"
 					>Необходимо ввести минимальную сумму
-					{{ $v.record.amount.$params.minValue.min }}</small
+					{{ $v.recordNew.amount.$params.minValue.min }}</small
 				>
 
 				<small
 					class="helper-text invalid"
-					v-else-if="$v.record.amount.$dirty && !$v.record.amount.required"
+					v-else-if="$v.recordNew.amount.$dirty && !$v.recordNew.amount.required"
 					>Необходимо заполнить поле</small
 				>
 			</div>
@@ -87,9 +88,10 @@
 				<input
 					id="description"
 					type="text"
-					v-model.trim="record.description"
+					v-model.trim="recordNew.description"
 					:class="{
-						invalid: $v.record.description.$dirty && !$v.record.description.required,
+						invalid:
+							$v.recordNew.description.$dirty && !$v.recordNew.description.required,
 					}"
 				/>
 
@@ -97,7 +99,7 @@
 
 				<small
 					class="helper-text invalid"
-					v-if="$v.record.description.$dirty && !$v.record.description.required"
+					v-if="$v.recordNew.description.$dirty && !$v.recordNew.description.required"
 					>Необходимо заполнить описание</small
 				>
 			</div>
@@ -130,38 +132,40 @@ export default {
 			},
 		],
 
-		record: {
-			id_category: null,
+		recordNew: {
+			idCategory: null,
 			type: 'income',
 			amount: 1,
 			description: '',
 		},
 	}),
 	validations: {
-		record: {
-			id_category: { required },
+		recordNew: {
+			idCategory: { required },
 			amount: { required, minValue: minValue(1) },
 			description: { required },
 		},
 	},
 	computed: {
 		...mapGetters(['GET_CATEGORIES', 'GET_AUTH_USER_NAME']),
+
 		canCreateRecord() {
-			if (this.record.type === 'income') {
+			if (this.recordNew.type === 'income') {
 				return true;
 			}
 
-			if (this.GET_AUTH_USER_NAME.bill >= this.record.amount) {
-				return true;
-			}
-
-			return false;
+			return this.GET_AUTH_USER_NAME.bill >= this.recordNew.amount;
 		},
 	},
 	methods: {
-		...mapActions(['GET_ALL_CATEGORY']),
+		...mapActions(['GET_ALL_CATEGORY', 'CREATE_RECORD']),
 
-		onSubmit() {
+		recordReset() {
+			this.recordNew.type = 'income';
+			this.recordNew.amount = 1;
+			this.recordNew.description = '';
+		},
+		async onSubmit() {
 			try {
 				if (this.$v.$invalid) {
 					this.$v.$touch();
@@ -169,11 +173,15 @@ export default {
 				}
 
 				if (!this.canCreateRecord) {
-					this.$message('Вам не хватает финансов');
+					this.$message('Вам не хватает средств на счёте');
 					return;
 				}
 
-				console.log(1);
+				await this.CREATE_RECORD(this.recordNew);
+
+				this.$message('Новая запись добавлена');
+
+				this.recordReset();
 			} catch (e) {
 				this.SET_ERROR(e);
 			}

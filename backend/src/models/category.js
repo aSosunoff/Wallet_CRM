@@ -15,6 +15,12 @@ const categorySchema = new mongoose.Schema({
 		type: Number,
 		required: true,
 	},
+	records: [
+		{
+			type: mongoose.Schema.Types.ObjectId,
+			ref: 'Record',
+		},
+	],
 	created: {
 		type: Date,
 		default: Date.now,

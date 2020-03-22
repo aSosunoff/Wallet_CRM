@@ -5,6 +5,7 @@ import auth from './modules/auth';
 import user from './modules/user';
 import category from './modules/category';
 import error from './modules/error';
+import record from './modules/record';
 
 Vue.use(Vuex);
 
@@ -29,5 +30,6 @@ export default new Vuex.Store({
 		user,
 		category,
 		error,
+		record,
 	},
 });
