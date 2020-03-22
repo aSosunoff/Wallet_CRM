@@ -20,7 +20,7 @@
 					ref="select"
 					v-model="record.id_category"
 					:class="{
-						invalid: $v.id_category.$dirty && !$v.id_category.required,
+						invalid: $v.record.id_category.$dirty && !$v.record.id_category.required,
 					}"
 				>
 					<option value="" disabled selected>Выбирите категорию</option>
@@ -37,7 +37,7 @@
 
 				<small
 					class="helper-text invalid"
-					v-if="$v.id_category.$dirty && !$v.id_category.required"
+					v-if="$v.record.id_category.$dirty && !$v.record.id_category.required"
 					>Необходимо выбрать категорию</small
 				>
 			</div>
@@ -62,20 +62,23 @@
 					v-model.number="record.amount"
 					:class="{
 						invalid:
-							($v.amount.$dirty && !$v.amount.minValue) ||
-							($v.amount.$dirty && !$v.amount.required),
+							($v.record.amount.$dirty && !$v.record.amount.minValue) ||
+							($v.record.amount.$dirty && !$v.record.amount.required),
 					}"
 				/>
 
 				<label for="amount">Сумма</label>
 
-				<small class="helper-text invalid" v-if="$v.amount.$dirty && !$v.amount.minValue"
-					>Необходимо ввести минимальную сумму {{ $v.amount.$params.minValue.min }}</small
+				<small
+					class="helper-text invalid"
+					v-if="$v.record.amount.$dirty && !$v.record.amount.minValue"
+					>Необходимо ввести минимальную сумму
+					{{ $v.record.amount.$params.minValue.min }}</small
 				>
 
 				<small
 					class="helper-text invalid"
-					v-else-if="$v.amount.$dirty && !$v.amount.required"
+					v-else-if="$v.record.amount.$dirty && !$v.record.amount.required"
 					>Необходимо заполнить поле</small
 				>
 			</div>
@@ -86,7 +89,7 @@
 					type="text"
 					v-model.trim="record.description"
 					:class="{
-						invalid: $v.description.$dirty && !$v.description.required,
+						invalid: $v.record.description.$dirty && !$v.record.description.required,
 					}"
 				/>
 
@@ -94,7 +97,7 @@
 
 				<small
 					class="helper-text invalid"
-					v-if="$v.description.$dirty && !$v.description.required"
+					v-if="$v.record.description.$dirty && !$v.record.description.required"
 					>Необходимо заполнить описание</small
 				>
 			</div>
@@ -135,20 +138,38 @@ export default {
 		},
 	}),
 	validations: {
-		id_category: { required },
-		amount: { required, minValue: minValue(1) },
-		description: { required },
+		record: {
+			id_category: { required },
+			amount: { required, minValue: minValue(1) },
+			description: { required },
+		},
 	},
 	computed: {
-		...mapGetters(['GET_CATEGORIES']),
+		...mapGetters(['GET_CATEGORIES', 'GET_AUTH_USER_NAME']),
+		canCreateRecord() {
+			if (this.record.type === 'income') {
+				return true;
+			}
+
+			if (this.GET_AUTH_USER_NAME.bill >= this.record.amount) {
+				return true;
+			}
+
+			return false;
+		},
 	},
 	methods: {
 		...mapActions(['GET_ALL_CATEGORY']),
 
-		async onSubmit() {
+		onSubmit() {
 			try {
 				if (this.$v.$invalid) {
 					this.$v.$touch();
+					return;
+				}
+
+				if (!this.canCreateRecord) {
+					this.$message('Вам не хватает финансов');
 					return;
 				}
 
