@@ -18,7 +18,7 @@
 			<div class="input-field">
 				<select
 					ref="select"
-					v-model="id_category"
+					v-model="record.id_category"
 					:class="{
 						invalid: $v.id_category.$dirty && !$v.id_category.required,
 					}"
@@ -35,19 +35,21 @@
 
 				<label>Выберите категорию</label>
 
-				<small class="helper-text invalid" v-if="$v.id_category.$dirty && !$v.id_category.required"
+				<small
+					class="helper-text invalid"
+					v-if="$v.id_category.$dirty && !$v.id_category.required"
 					>Необходимо выбрать категорию</small
 				>
 			</div>
 
-			<p v-for="el of type.list" :key="el.value">
+			<p v-for="el of typeList" :key="el.value">
 				<label>
 					<input
 						class="with-gap"
 						name="type"
 						type="radio"
 						:value="el.value"
-						v-model="type.selected"
+						v-model="record.type"
 					/>
 					<span>{{ el.title }}</span>
 				</label>
@@ -57,7 +59,7 @@
 				<input
 					id="amount"
 					type="number"
-					v-model.number="amount"
+					v-model.number="record.amount"
 					:class="{
 						invalid:
 							($v.amount.$dirty && !$v.amount.minValue) ||
@@ -82,7 +84,7 @@
 				<input
 					id="description"
 					type="text"
-					v-model.trim="description"
+					v-model.trim="record.description"
 					:class="{
 						invalid: $v.description.$dirty && !$v.description.required,
 					}"
@@ -114,23 +116,23 @@ export default {
 	data: () => ({
 		init_select: null,
 		loading: true,
-		type: {
-			selected: 'income',
-			list: [
-				{
-					title: 'Доход',
-					value: 'income',
-				},
-				{
-					title: 'Расход',
-					value: 'outcome',
-				},
-			],
-		},
+		typeList: [
+			{
+				title: 'Доход',
+				value: 'income',
+			},
+			{
+				title: 'Расход',
+				value: 'outcome',
+			},
+		],
 
-		id_category: null,
-		amount: 1,
-		description: '',
+		record: {
+			id_category: null,
+			type: 'income',
+			amount: 1,
+			description: '',
+		},
 	}),
 	validations: {
 		id_category: { required },
