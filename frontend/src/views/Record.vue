@@ -16,7 +16,7 @@
 
 		<form class="form" v-else>
 			<div class="input-field">
-				<select ref="select">
+				<select ref="select" v-model="id_category">
 					<option value="" disabled selected>Выбирите категорию</option>
 
 					<option
@@ -29,28 +29,27 @@
 				<label>Выберите категорию</label>
 			</div>
 
-			<p>
+			<p v-for="el of type.list" :key="el.value">
 				<label>
-					<input class="with-gap" name="type" type="radio" value="income" />
-					<span>Доход</span>
-				</label>
-			</p>
-
-			<p>
-				<label>
-					<input class="with-gap" name="type" type="radio" value="outcome" />
-					<span>Расход</span>
+					<input
+						class="with-gap"
+						name="type"
+						type="radio"
+						:value="el.value"
+						v-model="type.selected"
+					/>
+					<span>{{ el.title }}</span>
 				</label>
 			</p>
 
 			<div class="input-field">
-				<input id="amount" type="number" />
+				<input id="amount" type="number" v-model.number="amount"/>
 				<label for="amount">Сумма</label>
 				<span class="helper-text invalid">amount пароль</span>
 			</div>
 
 			<div class="input-field">
-				<input id="description" type="text" />
+				<input id="description" type="text"  v-model.trim="description"/>
 				<label for="description">Описание</label>
 				<span class="helper-text invalid">description пароль</span>
 			</div>
@@ -71,6 +70,22 @@ export default {
 	data: () => ({
 		init_select: null,
 		loading: true,
+		id_category: null,
+		type: {
+			selected: 'income',
+			list: [
+				{
+					title: 'Доход',
+					value: 'income',
+				},
+				{
+					title: 'Расход',
+					value: 'outcome',
+				},
+			],
+		},
+		amount: 100,
+		description: '',
 	}),
 	computed: {
 		...mapGetters(['GET_CATEGORIES']),
@@ -86,6 +101,8 @@ export default {
 		await this.$nextTick();
 
 		this.init_select = window.M.FormSelect.init(this.$refs.select);
+
+		window.M.updateTextFields();
 	},
 	destroyed() {
 		if (this.init_select && this.init_select.destroy) {
