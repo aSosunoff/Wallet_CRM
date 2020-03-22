@@ -53,5 +53,8 @@ export default {
 	updated() {
 		window.M.updateTextFields();
 	},
+	mounted() {
+		window.M.updateTextFields();
+	},
 };
 </script>

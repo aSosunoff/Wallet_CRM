@@ -113,7 +113,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex';
+import { mapActions, mapGetters, mapMutations } from 'vuex';
 import { required, minValue } from 'vuelidate/lib/validators';
 
 export default {
@@ -159,6 +159,7 @@ export default {
 	},
 	methods: {
 		...mapActions(['GET_ALL_CATEGORY', 'CREATE_RECORD']),
+		...mapMutations(['SET_ERROR']),
 
 		recordReset() {
 			this.recordNew.type = 'income';

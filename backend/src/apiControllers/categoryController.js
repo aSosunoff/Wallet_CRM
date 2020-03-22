@@ -11,9 +11,12 @@ exports.postCreate = async (req, res, next) => {
 			limit: req.body.limit,
 		});
 
-		await UserModel.pushCategory(category);
+		let categoryObject = category.toObject();
 
-		res.send(category._id);
+		res.send({
+			id: categoryObject._id,
+			...categoryObject,
+		});
 	} catch (e) {
 		if (e instanceof CategoryError) {
 			return next(new HttpError(403, e.message));
@@ -37,9 +40,9 @@ exports.getAllListCategory = async (req, res, next) => {
 	}
 };
 
-exports.postedit = async (req, res, next) => {
+exports.postEdit = async (req, res, next) => {
 	try {
-		await CategodyModel.findByIdAndUpdate(
+		const category = await CategodyModel.findByIdAndUpdate(
 			{ _id: req.body.id },
 			{
 				title: req.body.title,
@@ -48,7 +51,12 @@ exports.postedit = async (req, res, next) => {
 			{ new: true }
 		);
 
-		res.end();
+		let categoryObject = category.toObject();
+
+		res.send({
+			id: categoryObject._id,
+			...categoryObject,
+		});
 	} catch (e) {
 		if (e instanceof CategoryError) {
 			return next(new HttpError(403, e.message));

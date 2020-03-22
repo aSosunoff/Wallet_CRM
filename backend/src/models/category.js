@@ -1,5 +1,6 @@
 const mongoose = require('../libs/mongoose');
 const { CategoryError } = require('../error');
+const UserModel = require('./user');
 
 const categorySchema = new mongoose.Schema({
 	id_user: {
@@ -36,13 +37,19 @@ categorySchema.statics.createNew = async function({ id_user, title, limit }) {
 		throw new CategoryError(`У пользователя уже имеется ${title} категория`);
 	}
 
+	const user = await UserModel.findById(id_user);
+
 	category = new CategoryModel({
-		id_user: id_user,
+		id_user,
 		title,
 		limit,
 	});
 
 	await category.save();
+
+	user.categories.push(category);
+
+	await user.save();
 
 	return category;
 };

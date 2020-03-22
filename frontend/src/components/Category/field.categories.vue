@@ -42,6 +42,8 @@ export default {
 		this.SELECT_CATEGORY_CURRENT(this.GET_CATEGORIES[0]);
 
 		this.id = this.GET_CATEGORIES[0].id;
+
+		this.init_select = window.M.FormSelect.init(this.$refs.select);
 	},
 	destroyed() {
 		if (this.init_select && this.init_select.destroy) {

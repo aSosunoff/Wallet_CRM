@@ -8,7 +8,7 @@ exports.postCreate = async (req, res, next) => {
 		let recordObject = record.toObject();
 
 		res.send({
-			id: recordObject.id,
+			id: recordObject._id,
 			...recordObject,
 		});
 	} catch (e) {

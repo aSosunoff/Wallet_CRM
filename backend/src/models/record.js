@@ -1,6 +1,6 @@
 const mongoose = require('../libs/mongoose');
 const { RecordError } = require('../error');
-const CategoryModel = require('../models/category');
+const CategoryModel = require('./category');
 
 
 const recordSchema = new mongoose.Schema({

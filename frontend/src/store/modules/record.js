@@ -1,10 +1,12 @@
 export default {
-	state: {},
+	state: {
+		records: [],
+	},
 	mutations: {
-		/* ADD_CATEGORY(state, category) {
-			state.categories.push(category);
+		ADD_RECORD(state, record) {
+			state.records.push(record);
 		},
-		UPDATE_CATEGORY(state, category) {
+		/* UPDATE_CATEGORY(state, category) {
 			state.current = category;
 			state.categories.splice(
 				state.categories.findIndex(e => e.id === category.id),
@@ -20,8 +22,7 @@ export default {
 		}, */
 	},
 	getters: {
-		/* GET_CATEGORIES: state => state.categories,
-		GET_CURRENT: state => state.current, */
+		GET_RECORDS: state => state.records,
 	},
 	actions: {
 		async CREATE_RECORD({ commit }, { idCategory, type, amount, description }) {
@@ -32,6 +33,8 @@ export default {
 					amount,
 					description,
 				});
+
+				commit('ADD_RECORD', data);
 
 				return data;
 			} catch (e) {

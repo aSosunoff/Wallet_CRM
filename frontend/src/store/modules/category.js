@@ -35,12 +35,10 @@ export default {
 				});
 
 				commit('ADD_CATEGORY', {
-					id: data,
-					title,
-					limit,
+					...data,
 				});
 
-				return true;
+				return data;
 			} catch (e) {
 				commit('SET_ERROR', e);
 
@@ -49,19 +47,17 @@ export default {
 		},
 		async EDIT_CATEGORY({ commit }, { id, title, limit }) {
 			try {
-				await window.axiosTransport.post('category/edit', {
+				const { data } = await window.axiosTransport.post('category/edit', {
 					id,
 					title,
 					limit,
 				});
 
 				commit('UPDATE_CATEGORY', {
-					id,
-					title,
-					limit,
+					...data,
 				});
 
-				return true;
+				return data;
 			} catch (e) {
 				commit('SET_ERROR', e);
 
