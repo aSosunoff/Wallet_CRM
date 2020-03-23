@@ -13,6 +13,6 @@
 				"NODE_ENV": "development"
 			},
 			"program": "${workspaceFolder}\\backend\\src\\app.js"
-		}
+		},
 	]
 }
