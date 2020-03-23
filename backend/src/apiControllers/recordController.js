@@ -1,16 +1,27 @@
 const { HttpError, RecordError } = require('../error');
 const RecordModel = require('../models/record');
+const UserModel = require('../models/user');
 
 exports.postCreate = async (req, res, next) => {
 	try {
 		const record = await RecordModel.createNew(req.body);
 
-		let recordObject = record.toObject();
+		// const user = await UserModel.findOneAndUpdate(
+		// 	{ _id: req.body.id_user },
+		// 	{
+		// 		bill: req.body.bill,
+		// 	},
+		// 	{ new: true }
+		// );
 
-		res.send({
-			id: recordObject._id,
-			...recordObject,
-		});
+		// let recordObject = record.toObject();
+
+		// res.send({
+		// 	id: recordObject._id,
+		// 	...recordObject,
+		// });
+
+		res.end();
 	} catch (e) {
 		if (e instanceof RecordError) {
 			return next(new HttpError(403, e.message));

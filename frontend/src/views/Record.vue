@@ -158,7 +158,11 @@ export default {
 		},
 	},
 	methods: {
-		...mapActions(['GET_ALL_CATEGORY', 'CREATE_RECORD', 'GET_ALL_RECORDS']),
+		...mapActions([
+			'GET_ALL_CATEGORY',
+			'CREATE_RECORD',
+			'GET_ALL_RECORDS',
+		]),
 		...mapMutations(['SET_ERROR']),
 
 		recordReset() {

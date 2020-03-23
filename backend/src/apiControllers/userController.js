@@ -8,12 +8,13 @@ exports.getUser = async (req, res, next) => {
 
 		const user = await UserModel.findById(id);
 
-		const { _id, email, name } = user;
+		const { _id, email, name, bill } = user;
 
 		res.send({
 			id: _id,
 			email,
 			name,
+			bill,
 		});
 	} catch (e) {
 		return next(new HttpError(404, 'Пользователь не найден'));
@@ -38,18 +39,22 @@ exports.getAuthUser = (req, res, next) => {
 
 exports.putUpdateUser = async (req, res, next) => {
 	try {
-		let id = req.body.id;
-
 		const user = await UserModel.findOneAndUpdate(
-			{ _id: id },
+			{ _id: req.body.id },
 			{
 				email: req.body.email,
 				name: req.body.name,
+				bill: req.body.bill,
 			},
 			{ new: true }
 		);
 
-		res.end();
+		res.send({
+			id: req.body.id,
+			email: req.body.email,
+			name: req.body.name,
+			bill: req.body.bill,
+		});
 	} catch (e) {
 		return next(new HttpError(400, 'Ошибка обновления пользователя'));
 	}

@@ -14,7 +14,7 @@ export default {
 		GET_RECORDS: state => state.records,
 	},
 	actions: {
-		async CREATE_RECORD({ commit }, { idCategory, type, amount, description }) {
+		async CREATE_RECORD({ commit, dispatch }, { idCategory, type, amount, description }) {
 			try {
 				const { data } = await window.axiosTransport.post('record/create', {
 					idCategory,
@@ -23,7 +23,9 @@ export default {
 					description,
 				});
 
-				commit('ADD_RECORD', data);
+				commit('ADD_RECORD', { ...data });
+
+				await dispatch('GET_AUTH_USER');
 
 				return data;
 			} catch (e) {

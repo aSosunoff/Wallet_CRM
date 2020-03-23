@@ -1,7 +1,7 @@
 const mongoose = require('../libs/mongoose');
 const { RecordError } = require('../error');
 const CategoryModel = require('./category');
-
+const UserModel = require('./user');
 
 const recordSchema = new mongoose.Schema({
 	id_category: {
@@ -29,7 +29,23 @@ const recordSchema = new mongoose.Schema({
 recordSchema.statics.createNew = async function({ idCategory, type, amount, description }) {
 	const RecordModel = this;
 
-	const category = await CategoryModel.findById(idCategory);
+	const category = await CategoryModel.findById(idCategory)
+		.populate('id_user')
+		.exec();
+
+	const { id_user: user } = category;
+
+	if (type === 'outcome' && amount > user.bill) {
+		throw new RecordError('На счёте не достаточно средств');
+	}
+
+	const userUpdated = await UserModel.findByIdAndUpdate(
+		user._id,
+		{
+			bill: type === 'outcome' ? user.bill - amount : user.bill + amount,
+		},
+		{ new: true }
+	);
 
 	const record = new RecordModel({
 		id_category: idCategory,

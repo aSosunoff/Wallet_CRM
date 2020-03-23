@@ -37,7 +37,7 @@ export default {
 			try {
 				const { data } = await window.axiosTransport.get('user/getAuthUser');
 
-				commit('SET_AUTH_USER', data);
+				commit('SET_AUTH_USER', { ...data });
 
 				return data;
 			} catch (e) {

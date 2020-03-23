@@ -15,5 +15,6 @@ module.exports = {
 		'arrow-parens': ['error', 'as-needed'],
 		'no-tabs': 0,
 		'object-curly-newline': 'off',
+		'operator-linebreak': ['warn', 'before'],
 	},
 };
