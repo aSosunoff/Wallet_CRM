@@ -7,17 +7,19 @@
 
 		<Loader v-if="loading" />
 
-		<section v-else>
-			<div>
-				<p>
-					<strong>Девушка:</strong>
-					12 122 из 14 0000
-				</p>
-				<div class="progress">
-					<div class="determinate green" style="width:40%"></div>
+		<template v-else>
+			<section v-for="cat of GET_CATEGORIES" :key="cat.id">
+				<div>
+					<p>
+						<strong>{{ cat.title }}:</strong>
+						12 122 из {{ cat.limit }}
+					</p>
+					<div class="progress">
+						<div class="determinate green" style="width:40%"></div>
+					</div>
 				</div>
-			</div>
-		</section>
+			</section>
+		</template>
 	</div>
 </template>
 
