@@ -73,5 +73,13 @@ export default new VueRouter({
 			},
 			component: () => import('@/views/Record.vue'),
 		},
+		{
+			path: '*',
+			name: '404',
+			meta: {
+				layout: 'main',
+			},
+			component: () => import('@/views/404.vue'),
+		},
 	],
 });
