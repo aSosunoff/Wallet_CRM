@@ -2,11 +2,13 @@ const { HttpError, CategoryError } = require('../error');
 const CategodyModel = require('../models/category');
 const UserModel = require('../models/user');
 const logger = require('../libs/logger')(module);
+const { mapRecords: _mapRecords } = require('./recordController');
 const mapRecords = require('../libs/mapRecord')(obj => ({
 	id: obj._id,
 	title: obj.title,
 	limit: obj.limit,
 	id_user: obj.id_user,
+	records: obj.records.map(_mapRecords),
 }));
 
 
@@ -30,7 +32,9 @@ exports.postCreate = async (req, res, next) => {
 
 exports.getAllListCategory = async (req, res, next) => {
 	try {
-		const categories = await CategodyModel.find();
+		const categories = await CategodyModel.find()
+			.populate('records')
+			.exec();
 
 		res.send(categories.map(mapRecords));
 	} catch (e) {

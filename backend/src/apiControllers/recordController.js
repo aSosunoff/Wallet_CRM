@@ -8,6 +8,8 @@ const mapRecords = require('../libs/mapRecord')(obj => ({
 	created: obj.created,
 }));
 
+exports.mapRecords = mapRecords;
+
 exports.postCreate = async (req, res, next) => {
 	try {
 		const record = await RecordModel.createNew(req.body);
