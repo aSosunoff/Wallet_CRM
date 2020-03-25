@@ -30,7 +30,7 @@
 import Navbar from '@/components/app/Navbar.vue';
 import Sidebar from '@/components/app/Sidebar.vue';
 
-import { mapGetters, mapActions } from 'vuex';
+import { mapGetters, mapActions, mapMutations } from 'vuex';
 
 export default {
 	name: 'MainLayout',
@@ -43,6 +43,7 @@ export default {
 	},
 	methods: {
 		...mapActions(['LOAD_AUTH_USER']),
+		...mapMutations(['SET_ERROR']),
 	},
 	async mounted() {
 		try {
@@ -52,6 +53,7 @@ export default {
 
 			this.loading = false;
 		} catch (e) {
+			this.SET_ERROR(e);
 			this.$router.push('/login');
 		}
 	},

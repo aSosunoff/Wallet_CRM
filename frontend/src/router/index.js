@@ -3,7 +3,7 @@ import VueRouter from 'vue-router';
 
 Vue.use(VueRouter);
 
-export default new VueRouter({
+const router = new VueRouter({
 	mode: 'history',
 	base: process.env.BASE_URL,
 	routes: [
@@ -22,6 +22,7 @@ export default new VueRouter({
 			name: 'home',
 			meta: {
 				layout: 'main',
+				auth: true,
 			},
 			component: () => import('@/views/Home.vue'),
 		},
@@ -30,6 +31,7 @@ export default new VueRouter({
 			name: 'categories',
 			meta: {
 				layout: 'main',
+				auth: true,
 			},
 			component: () => import('@/views/Categories.vue'),
 		},
@@ -38,6 +40,7 @@ export default new VueRouter({
 			name: 'detail',
 			meta: {
 				layout: 'main',
+				auth: true,
 			},
 			component: () => import('@/views/Detail.vue'),
 		},
@@ -46,6 +49,7 @@ export default new VueRouter({
 			name: 'history',
 			meta: {
 				layout: 'main',
+				auth: true,
 			},
 			component: () => import('@/views/History.vue'),
 		},
@@ -54,6 +58,7 @@ export default new VueRouter({
 			name: 'planning',
 			meta: {
 				layout: 'main',
+				auth: true,
 			},
 			component: () => import('@/views/Planning.vue'),
 		},
@@ -62,6 +67,7 @@ export default new VueRouter({
 			name: 'profile',
 			meta: {
 				layout: 'main',
+				auth: true,
 			},
 			component: () => import('@/views/Profile.vue'),
 		},
@@ -70,6 +76,7 @@ export default new VueRouter({
 			name: 'record',
 			meta: {
 				layout: 'main',
+				auth: true,
 			},
 			component: () => import('@/views/Record.vue'),
 		},
@@ -78,8 +85,15 @@ export default new VueRouter({
 			name: '404',
 			meta: {
 				layout: 'main',
+				auth: true,
 			},
 			component: () => import('@/views/404.vue'),
 		},
 	],
 });
+
+router.beforeEach((to, from, next) => {
+	next();
+});
+
+export default router;
