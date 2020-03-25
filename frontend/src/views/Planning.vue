@@ -14,7 +14,15 @@
 						<strong>{{ cat.title }}:</strong>
 						{{ cat.sumAmount | currencyFilter('RUB') }} из
 						{{ cat.limit | currencyFilter('RUB') }}
+
+						<a
+							style="cursor:pointer"
+							@click.prevent="cat.visibleInfo = !cat.visibleInfo"
+							class="right"
+							>информация</a
+						>
 					</p>
+
 					<div class="progress">
 						<div
 							class="determinate"
@@ -22,6 +30,28 @@
 							:style="{ width: cat.progressPercent }"
 						></div>
 					</div>
+
+					<transition name="fade">
+						<div v-if="cat.visibleInfo">
+							<table>
+								<thead>
+									<tr>
+										<th>Описание</th>
+										<th>Тип</th>
+										<th>Сумма</th>
+									</tr>
+								</thead>
+
+								<tbody>
+									<tr v-for="rec of cat.records" :key="rec.id">
+										<td>{{ rec.description }}</td>
+										<td>{{ rec.type === 'outcome' ? 'расход' : 'доход' }}</td>
+										<td>{{ rec.amount }}</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</transition>
 				</div>
 			</section>
 		</template>
@@ -72,6 +102,8 @@ export default {
 				limit: cat.limit,
 				progressPercent: `${progressPercent}%`,
 				progressColor,
+				records: cat.records,
+				visibleInfo: false,
 			};
 		});
 
@@ -79,3 +111,14 @@ export default {
 	},
 };
 </script>
+
+<style>
+.fade-enter-active,
+.fade-leave-active {
+	transition: all .2s ease;
+}
+.fade-enter, .fade-leave-to {
+	transform: translateY(-10px);
+	opacity: 0;
+}
+</style>
