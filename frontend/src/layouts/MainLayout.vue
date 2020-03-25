@@ -14,7 +14,11 @@
 			</main>
 
 			<div class="fixed-action-btn">
-				<router-link class="btn-floating btn-large blue" to="/record">
+				<router-link
+					class="btn-floating btn-large blue"
+					to="/record"
+					v-tooltip:left="'создать новую запись'"
+				>
 					<i class="large material-icons">add</i>
 				</router-link>
 			</div>
@@ -49,7 +53,6 @@ export default {
 			this.loading = false;
 		} catch (e) {
 			this.$router.push('/login');
-			/* continue regardless of error */
 		}
 	},
 	components: {

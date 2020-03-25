@@ -10,7 +10,7 @@
 		<template v-else>
 			<section v-for="cat of categories" :key="cat.id">
 				<div>
-					<p>
+					<p v-tooltip="cat.tooltip">
 						<strong>{{ cat.title }}:</strong>
 						{{ cat.sumAmount | currencyFilter('RUB') }} из
 						{{ cat.limit | currencyFilter('RUB') }}
@@ -60,6 +60,7 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex';
+import currencyFilter from '@/filters/currency.filter';
 
 export default {
 	name: 'planning',
@@ -96,6 +97,8 @@ export default {
 				progressColor = 'yellow';
 			}
 
+			const tooltip = currencyFilter(cat.limit - sumAmount, 'RUB');
+
 			return {
 				title: cat.title,
 				sumAmount,
@@ -104,6 +107,7 @@ export default {
 				progressColor,
 				records: cat.records,
 				visibleInfo: false,
+				tooltip: `остаток ${tooltip}`,
 			};
 		});
 
@@ -115,9 +119,10 @@ export default {
 <style>
 .fade-enter-active,
 .fade-leave-active {
-	transition: all .2s ease;
+	transition: all 0.2s ease;
 }
-.fade-enter, .fade-leave-to {
+.fade-enter,
+.fade-leave-to {
 	transform: translateY(-10px);
 	opacity: 0;
 }
