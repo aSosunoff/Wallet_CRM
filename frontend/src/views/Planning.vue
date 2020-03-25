@@ -5,7 +5,9 @@
 			<h4>12 212</h4>
 		</div>
 
-		<section>
+		<Loader v-if="loading" />
+
+		<section v-else>
 			<div>
 				<p>
 					<strong>Девушка:</strong>
@@ -18,3 +20,26 @@
 		</section>
 	</div>
 </template>
+
+<script>
+import { mapActions, mapGetters } from 'vuex';
+
+export default {
+	name: 'planning',
+	data: () => ({
+		loading: true,
+		categories: [],
+	}),
+	computed: {
+		...mapGetters(['GET_CATEGORIES']),
+	},
+	methods: {
+		...mapActions(['LOAD_CATEGORIES']),
+	},
+	async mounted() {
+		await this.LOAD_CATEGORIES();
+
+		this.loading = false;
+	},
+};
+</script>

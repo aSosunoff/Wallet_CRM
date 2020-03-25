@@ -1,23 +1,12 @@
 const { HttpError, AuthError } = require('../error');
 const UserModel = require('../models/user');
 const logger = require('../libs/logger')(module);
-
-const MapUser = (record) => {
-	let recordObject = null;
-
-	if('toObject' in record){
-		recordObject = record.toObject();
-	} else {
-		recordObject = record;
-	}
-
-	return {
-		id: recordObject._id,
-		email: recordObject.email,
-		name: recordObject.name,
-		bill: recordObject.bill,
-	}
-}
+const mapRecords = require('../libs/mapRecord')(obj => ({
+	id: obj._id,
+	email: obj.email,
+	name: obj.name,
+	bill: obj.bill,
+}));
 
 exports.getUser = async (req, res, next) => {
 	try {
@@ -25,14 +14,14 @@ exports.getUser = async (req, res, next) => {
 
 		const user = await UserModel.findById(id);
 
-		res.send(MapUser(user));
+		res.send(mapRecords(user));
 	} catch (e) {
 		return next(new HttpError(404, 'Пользователь не найден'));
 	}
 };
 
 exports.getAuthUser = (req, res, next) => {
-	res.send(MapUser(req.user));
+	res.send(mapRecords(req.user));
 };
 
 exports.putUpdateUser = async (req, res, next) => {
@@ -47,7 +36,7 @@ exports.putUpdateUser = async (req, res, next) => {
 			{ new: true }
 		);
 
-		res.send(MapUser(user));
+		res.send(mapRecords(user));
 	} catch (e) {
 		return next(new HttpError(400, 'Ошибка обновления пользователя'));
 	}

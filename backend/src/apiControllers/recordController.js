@@ -1,23 +1,18 @@
 const { HttpError, RecordError } = require('../error');
 const RecordModel = require('../models/record');
-
-const MapRecord = (record) => {
-	const recordObject = record.toObject();
-
-	return {
-		id: recordObject._id,
-		type: recordObject.type,
-		amount: recordObject.amount,
-		description: recordObject.description,
-		created: recordObject.created
-	}
-}
+const mapRecords = require('../libs/mapRecord')(obj => ({
+	id: obj._id,
+	type: obj.type,
+	amount: obj.amount,
+	description: obj.description,
+	created: obj.created,
+}));
 
 exports.postCreate = async (req, res, next) => {
 	try {
 		const record = await RecordModel.createNew(req.body);
 
-		res.send(MapRecord(record));
+		res.send(mapRecords(record));
 	} catch (e) {
 		if (e instanceof RecordError) {
 			return next(new HttpError(403, e.message));
@@ -31,7 +26,7 @@ exports.getAllListRecords = async (req, res, next) => {
 	try {
 		const records = await RecordModel.find();
 
-		res.send(records.map(MapRecord));
+		res.send(records.map(mapRecords));
 	} catch (e) {
 		return next(e);
 	}

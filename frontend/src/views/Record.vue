@@ -159,7 +159,7 @@ export default {
 	},
 	methods: {
 		...mapActions([
-			'GET_ALL_CATEGORY',
+			'LOAD_CATEGORIES',
 			'CREATE_RECORD',
 			'GET_ALL_RECORDS',
 		]),
@@ -193,7 +193,7 @@ export default {
 		},
 	},
 	async mounted() {
-		await this.GET_ALL_CATEGORY();
+		await this.LOAD_CATEGORIES();
 
 		await this.GET_ALL_RECORDS();
 

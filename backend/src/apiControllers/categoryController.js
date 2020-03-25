@@ -2,6 +2,13 @@ const { HttpError, CategoryError } = require('../error');
 const CategodyModel = require('../models/category');
 const UserModel = require('../models/user');
 const logger = require('../libs/logger')(module);
+const mapRecords = require('../libs/mapRecord')(obj => ({
+	id: obj._id,
+	title: obj.title,
+	limit: obj.limit,
+	id_user: obj.id_user,
+}));
+
 
 exports.postCreate = async (req, res, next) => {
 	try {
@@ -11,12 +18,7 @@ exports.postCreate = async (req, res, next) => {
 			limit: req.body.limit,
 		});
 
-		let categoryObject = category.toObject();
-
-		res.send({
-			id: categoryObject._id,
-			...categoryObject,
-		});
+		res.send(mapRecords(category));
 	} catch (e) {
 		if (e instanceof CategoryError) {
 			return next(new HttpError(403, e.message));
@@ -30,7 +32,7 @@ exports.getAllListCategory = async (req, res, next) => {
 	try {
 		const categories = await CategodyModel.find();
 
-		res.send(categories.map(e => e.toObject()).map(e => ({ ...e, id: e._id })));
+		res.send(categories.map(mapRecords));
 	} catch (e) {
 		return next(e);
 	}
@@ -47,12 +49,7 @@ exports.postEdit = async (req, res, next) => {
 			{ new: true }
 		);
 
-		let categoryObject = category.toObject();
-
-		res.send({
-			id: categoryObject._id,
-			...categoryObject,
-		});
+		res.send(mapRecords(category));
 	} catch (e) {
 		if (e instanceof CategoryError) {
 			return next(new HttpError(403, e.message));

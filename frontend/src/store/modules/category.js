@@ -64,7 +64,7 @@ export default {
 				throw e;
 			}
 		},
-		async GET_ALL_CATEGORY({ commit }) {
+		async LOAD_CATEGORIES({ commit }) {
 			try {
 				const { data } = await window.axiosTransport.get('category/get-all-category');
 

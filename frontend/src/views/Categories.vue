@@ -32,7 +32,7 @@ export default {
 		loading: true,
 	}),
 	async mounted() {
-		await this.GET_ALL_CATEGORY();
+		await this.LOAD_CATEGORIES();
 		this.loading = false;
 	},
 	computed: {
@@ -43,7 +43,7 @@ export default {
 		Edit: () => import('@/components/Category/Edit'),
 	},
 	methods: {
-		...mapActions(['GET_ALL_CATEGORY']),
+		...mapActions(['LOAD_CATEGORIES']),
 	},
 };
 </script>
