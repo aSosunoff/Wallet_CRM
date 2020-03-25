@@ -35,15 +35,15 @@ export default {
 		loading: true,
 	}),
 	computed: {
-		...mapGetters(['GET_AUTH_USER_NAME']),
+		...mapGetters(['GET_AUTH_USER']),
 	},
 	methods: {
-		...mapActions(['GET_AUTH_USER']),
+		...mapActions(['LOAD_AUTH_USER']),
 	},
 	async mounted() {
 		try {
-			if (!Object.keys(this.GET_AUTH_USER_NAME).length) {
-				await this.GET_AUTH_USER();
+			if (!Object.keys(this.GET_AUTH_USER).length) {
+				await this.LOAD_AUTH_USER();
 			}
 
 			this.loading = false;

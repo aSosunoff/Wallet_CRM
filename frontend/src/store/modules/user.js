@@ -5,7 +5,7 @@ export default {
 		authUser: {},
 	},
 	getters: {
-		GET_AUTH_USER_NAME: state => state.authUser,
+		GET_AUTH_USER: state => state.authUser,
 	},
 	mutations: {
 		SET_PADDING_UPDATE(state, padding) {
@@ -33,7 +33,7 @@ export default {
 				throw e;
 			}
 		},
-		async GET_AUTH_USER({ commit }) {
+		async LOAD_AUTH_USER({ commit }) {
 			try {
 				const { data } = await window.axiosTransport.get('user/getAuthUser');
 

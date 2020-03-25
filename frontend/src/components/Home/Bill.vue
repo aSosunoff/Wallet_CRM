@@ -22,10 +22,10 @@ export default {
 		currencies: ['RUB', 'USD', 'EUR'],
 	}),
 	computed: {
-		...mapGetters(['GET_AUTH_USER_NAME']),
+		...mapGetters(['GET_AUTH_USER']),
 
 		base() {
-			return this.GET_AUTH_USER_NAME.bill / (this.rates.RUB / this.rates.EUR);
+			return this.GET_AUTH_USER.bill / (this.rates.RUB / this.rates.EUR);
 		},
 	},
 	methods: {

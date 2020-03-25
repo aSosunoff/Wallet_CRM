@@ -2,7 +2,7 @@
 	<div>
 		<div class="page-title">
 			<h3>Планирование</h3>
-			<h4>12 212</h4>
+			<h4>{{ GET_AUTH_USER.bill }}</h4>
 		</div>
 
 		<Loader v-if="loading" />
@@ -33,7 +33,7 @@ export default {
 		categories: [],
 	}),
 	computed: {
-		...mapGetters(['GET_CATEGORIES']),
+		...mapGetters(['GET_CATEGORIES', 'GET_AUTH_USER']),
 	},
 	methods: {
 		...mapActions(['LOAD_CATEGORIES']),

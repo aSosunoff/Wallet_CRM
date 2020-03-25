@@ -17,7 +17,7 @@
 						data-target="dropdown"
 						ref="dropdown"
 					>
-						{{ GET_AUTH_USER_NAME.name || GET_AUTH_USER_NAME.email }}
+						{{ GET_AUTH_USER.name || GET_AUTH_USER.email }}
 						<i class="material-icons right">arrow_drop_down</i>
 					</a>
 
@@ -53,7 +53,7 @@ export default {
 		userName: '',
 	}),
 	computed: {
-		...mapGetters(['GET_AUTH_USER_NAME']),
+		...mapGetters(['GET_AUTH_USER']),
 	},
 	methods: {
 		...mapActions(['LOGOUT']),

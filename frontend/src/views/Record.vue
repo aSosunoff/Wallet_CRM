@@ -147,14 +147,14 @@ export default {
 		},
 	},
 	computed: {
-		...mapGetters(['GET_CATEGORIES', 'GET_AUTH_USER_NAME']),
+		...mapGetters(['GET_CATEGORIES', 'GET_AUTH_USER']),
 
 		canCreateRecord() {
 			if (this.recordNew.type === 'income') {
 				return true;
 			}
 
-			return this.GET_AUTH_USER_NAME.bill >= this.recordNew.amount;
+			return this.GET_AUTH_USER.bill >= this.recordNew.amount;
 		},
 	},
 	methods: {
