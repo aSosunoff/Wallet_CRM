@@ -25,7 +25,7 @@ export default {
 
 				commit('ADD_RECORD', { ...data });
 
-				await dispatch('GET_AUTH_USER');
+				await dispatch('LOAD_AUTH_USER');
 
 				return data;
 			} catch (e) {
