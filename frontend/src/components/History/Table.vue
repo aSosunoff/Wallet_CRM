@@ -20,12 +20,12 @@
 				<td>
 					<span
 						class="white-text badge"
-						:class="{ red: rec.type === 'outcome', green: rec.type !== 'outcome' }"
+						:class="[rec.type === 'outcome' ? 'red' : 'green']"
 						>{{ rec.type | recordType }}</span
 					>
 				</td>
 				<td>
-					<button class="btn-small btn">
+					<button class="btn-small btn" @click="$router.push(`/detail/:${rec.id}`)">
 						<i class="material-icons">open_in_new</i>
 					</button>
 				</td>
