@@ -25,7 +25,7 @@
 					>
 				</td>
 				<td>
-					<button class="btn-small btn" @click="$router.push(`/detail/:${rec.id}`)">
+					<button class="btn-small btn" @click="$router.push(`/detail/${rec.id}`)">
 						<i class="material-icons">open_in_new</i>
 					</button>
 				</td>
