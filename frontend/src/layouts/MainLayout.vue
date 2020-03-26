@@ -47,7 +47,7 @@ export default {
 	},
 	async mounted() {
 		try {
-			if (!Object.keys(this.GET_AUTH_USER).length) {
+			if (!this.GET_AUTH_USER.id) {
 				await this.LOAD_AUTH_USER();
 			}
 

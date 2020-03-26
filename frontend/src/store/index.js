@@ -10,6 +10,21 @@ import record from './modules/record';
 Vue.use(Vuex);
 
 export default new Vuex.Store({
+	state: {
+		userAuthTest: true,
+		authUser: {},
+	},
+	getters: {
+		GET_AUTH_USER: state => state.authUser,
+	},
+	mutations: {
+		SET_AUTH_USER(state, authUser) {
+			state.authUser = { ...authUser };
+		},
+		CLEAR_AUTH_USER(state) {
+			state.authUser = {};
+		},
+	},
 	actions: {
 		async FETCH_FIXER({ commit }) {
 			try {
@@ -20,6 +35,19 @@ export default new Vuex.Store({
 				return data;
 			} catch (e) {
 				commit('SET_ERROR', 'Не удалось прочитать данные по валютам');
+
+				throw e;
+			}
+		},
+		async LOAD_AUTH_USER({ commit }) {
+			try {
+				const { data } = await window.axiosTransport.get('user/getAuthUser');
+
+				commit('SET_AUTH_USER', { ...data });
+
+				return data;
+			} catch (e) {
+				commit('SET_ERROR', e);
 
 				throw e;
 			}

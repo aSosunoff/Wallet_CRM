@@ -93,7 +93,11 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-	next();
+	if (to.matched.some(record => record.meta.auth)) {
+		next();
+	} else {
+		next();
+	}
 });
 
 export default router;
