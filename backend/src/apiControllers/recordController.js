@@ -1,20 +1,17 @@
 const { HttpError, RecordError } = require('../error');
 const RecordModel = require('../models/record');
-// const { mapRecords: _mapRecords } = require('./categoryController');
-const mapCategoryRecords = require('../libs/mapRecord')(obj => ({
-	id: obj._id,
-	title: obj.title,
-	limit: obj.limit,
-	// id_user: obj.id_user,
-	// records: obj.records.map(_mapRecords),
-}));
+
 const mapRecords = require('../libs/mapRecord')(obj => ({
 	id: obj._id,
 	type: obj.type,
 	amount: obj.amount,
 	description: obj.description,
 	created: obj.created,
-	category: mapCategoryRecords(obj.id_category),
+	category: require('../libs/mapRecord')(obj => ({
+		id: obj._id,
+		title: obj.title,
+		limit: obj.limit,
+	}))(obj.id_category),
 }));
 
 exports.mapRecords = mapRecords;

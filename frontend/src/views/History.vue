@@ -4,13 +4,17 @@
 			<h3>История записей</h3>
 		</div>
 
-		<div class="history-chart">
-			<canvas></canvas>
-		</div>
+		<Loader v-if="loading" />
 
-		<section>
-			<Table />
-		</section>
+		<div v-else>
+			<div class="history-chart">
+				<canvas></canvas>
+			</div>
+
+			<section>
+				<Table />
+			</section>
+		</div>
 	</div>
 </template>
 
@@ -19,6 +23,9 @@ import { mapActions } from 'vuex';
 
 export default {
 	name: 'history',
+	data: () => ({
+		loading: true,
+	}),
 	components: {
 		Table: () => import('@/components/History/Table'),
 	},
@@ -27,6 +34,8 @@ export default {
 	},
 	async mounted() {
 		await this.GET_ALL_RECORDS();
+
+		this.loading = false;
 	},
 };
 </script>

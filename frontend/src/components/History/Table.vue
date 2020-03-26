@@ -12,10 +12,10 @@
 		</thead>
 
 		<tbody>
-			<tr v-for="rec of GET_RECORDS" :key="rec.id">
-				<td>1</td>
-				<td>{{ rec.amount }}</td>
-				<td>{{ rec.created }}</td>
+			<tr v-for="(rec, inx) of GET_RECORDS" :key="rec.id">
+				<td>{{ inx + 1 }}</td>
+				<td>{{ rec.amount | currencyFilter }}</td>
+				<td>{{ rec.created | dateFilter }}</td>
 				<td>{{ rec.category.title }}</td>
 				<td>
 					<span
