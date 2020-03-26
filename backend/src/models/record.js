@@ -63,4 +63,12 @@ recordSchema.statics.createNew = async function({ idCategory, type, amount, desc
 	return record;
 };
 
+recordSchema.statics.getList = async function() {
+	const records = await this.find()
+		.populate('id_category')
+		.exec();
+
+	return records;
+};
+
 module.exports = mongoose.model('Record', recordSchema);

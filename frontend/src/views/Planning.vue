@@ -45,7 +45,7 @@
 								<tbody>
 									<tr v-for="rec of cat.records" :key="rec.id">
 										<td>{{ rec.description }}</td>
-										<td>{{ rec.type === 'outcome' ? 'расход' : 'доход' }}</td>
+										<td>{{ rec.type | recordType }}</td>
 										<td>{{ rec.amount }}</td>
 									</tr>
 								</tbody>
@@ -61,6 +61,7 @@
 <script>
 import { mapActions, mapGetters } from 'vuex';
 import currencyFilter from '@/filters/currency.filter';
+import recordType from '@/filters/record.type';
 
 export default {
 	name: 'planning',
@@ -76,7 +77,7 @@ export default {
 
 		sumAmount(records) {
 			return records.reduce(
-				(r, e) => (e.type === 'outcome' ? r + e.amount : r - e.amount),
+				(r, e) => recordType(e.type),
 				0,
 			);
 		},

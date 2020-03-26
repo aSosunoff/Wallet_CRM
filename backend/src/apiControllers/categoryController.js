@@ -11,6 +11,7 @@ const mapRecords = require('../libs/mapRecord')(obj => ({
 	records: obj.records.map(_mapRecords),
 }));
 
+exports.mapRecords = mapRecords;
 
 exports.postCreate = async (req, res, next) => {
 	try {
@@ -32,7 +33,7 @@ exports.postCreate = async (req, res, next) => {
 
 exports.getAllListCategory = async (req, res, next) => {
 	try {
-		const categories = await CategodyModel.getAllCategories();
+		const categories = await CategodyModel.getList();
 
 		res.send(categories.map(mapRecords));
 	} catch (e) {

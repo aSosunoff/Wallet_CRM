@@ -16,9 +16,13 @@
 				<td>1</td>
 				<td>{{ rec.amount }}</td>
 				<td>{{ rec.created }}</td>
-				<td>категория</td>
+				<td>{{ rec.category.title }}</td>
 				<td>
-					<span class="white-text badge red">{{ rec.type }}</span>
+					<span
+						class="white-text badge"
+						:class="{ red: rec.type === 'outcome', green: rec.type !== 'outcome' }"
+						>{{ rec.type | recordType }}</span
+					>
 				</td>
 				<td>
 					<button class="btn-small btn">

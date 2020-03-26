@@ -3,8 +3,11 @@ import Vuelidate from 'vuelidate';
 import App from '@/App.vue';
 import router from '@/router';
 import store from '@/store';
+
 import dateFilter from '@/filters/date.filter';
 import currencyFilter from '@/filters/currency.filter';
+import recordType from '@/filters/record.type';
+
 import messagePlugin from '@/utils/message.plugin';
 import tooltipDirective from '@/directives/tooltip.directive';
 import Loader from '@/components/app/Loader.vue';
@@ -22,6 +25,7 @@ Vue.config.productionTip = false;
 
 Vue.filter('dateFilter', dateFilter);
 Vue.filter('currencyFilter', currencyFilter);
+Vue.filter('recordType', recordType);
 
 Vue.directive('tooltip', tooltipDirective);
 

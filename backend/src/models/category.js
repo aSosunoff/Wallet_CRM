@@ -54,7 +54,7 @@ categorySchema.statics.createNew = async function({ id_user, title, limit }) {
 	return category;
 };
 
-categorySchema.statics.getAllCategories = async function() {
+categorySchema.statics.getList = async function() {
 	const categories = await this.find()
 		.populate('records')
 		.exec();
