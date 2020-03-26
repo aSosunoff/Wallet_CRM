@@ -54,4 +54,12 @@ categorySchema.statics.createNew = async function({ id_user, title, limit }) {
 	return category;
 };
 
+categorySchema.statics.getAllCategories = async function() {
+	const categories = await this.find()
+		.populate('records')
+		.exec();
+
+	return categories;
+};
+
 module.exports = mongoose.model('Category', categorySchema);

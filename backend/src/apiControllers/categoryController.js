@@ -32,9 +32,7 @@ exports.postCreate = async (req, res, next) => {
 
 exports.getAllListCategory = async (req, res, next) => {
 	try {
-		const categories = await CategodyModel.find()
-			.populate('records')
-			.exec();
+		const categories = await CategodyModel.getAllCategories();
 
 		res.send(categories.map(mapRecords));
 	} catch (e) {
