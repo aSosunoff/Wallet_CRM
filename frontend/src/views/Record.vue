@@ -161,7 +161,7 @@ export default {
 		...mapActions([
 			'LOAD_CATEGORIES',
 			'CREATE_RECORD',
-			'GET_ALL_RECORDS',
+			'LOAD_RECORDS',
 		]),
 		...mapMutations(['SET_ERROR']),
 
@@ -195,7 +195,7 @@ export default {
 	async mounted() {
 		await this.LOAD_CATEGORIES();
 
-		await this.GET_ALL_RECORDS();
+		await this.LOAD_RECORDS();
 
 		this.loading = false;
 

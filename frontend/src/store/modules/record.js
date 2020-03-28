@@ -34,7 +34,7 @@ export default {
 				throw e;
 			}
 		},
-		async GET_ALL_RECORDS({ commit }) {
+		async LOAD_RECORDS({ commit }) {
 			try {
 				const { data } = await window.axiosTransport.get('record/get-all-records');
 

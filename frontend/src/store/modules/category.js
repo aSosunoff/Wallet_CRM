@@ -1,6 +1,6 @@
 export default {
 	state: {
-		categories: null,
+		categories: [],
 		current: null,
 	},
 	mutations: {
