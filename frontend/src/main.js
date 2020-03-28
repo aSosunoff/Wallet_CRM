@@ -10,7 +10,10 @@ import recordType from '@/filters/record.type';
 
 import messagePlugin from '@/utils/message.plugin';
 import tooltipDirective from '@/directives/tooltip.directive';
+
 import Loader from '@/components/app/Loader.vue';
+import Paginate from 'vuejs-paginate';
+
 import '@/registerServiceWorker';
 import 'materialize-css/dist/js/materialize.min';
 import axios from 'axios/dist/axios.min';
@@ -33,6 +36,7 @@ Vue.use(Vuelidate);
 Vue.use(messagePlugin);
 
 Vue.component('Loader', Loader);
+Vue.component('Paginate', Paginate);
 
 new Vue({
 	router,
