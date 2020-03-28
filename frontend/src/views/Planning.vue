@@ -61,7 +61,6 @@
 <script>
 import { mapActions, mapGetters } from 'vuex';
 import currencyFilter from '@/filters/currency.filter';
-import recordType from '@/filters/record.type';
 
 export default {
 	name: 'planning',
@@ -77,7 +76,7 @@ export default {
 
 		sumAmount(records) {
 			return records.reduce(
-				(r, e) => recordType(e.type),
+				(r, e) => (e.type === 'outcome' ? r + e.amount : r - e.amount),
 				0,
 			);
 		},

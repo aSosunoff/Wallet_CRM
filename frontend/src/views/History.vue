@@ -35,22 +35,16 @@ export default {
 		...mapActions(['LOAD_RECORDS', 'LOAD_CATEGORIES']),
 	},
 	async mounted() {
-		if (!this.GET_RECORDS.length) {
-			await this.LOAD_RECORDS();
-		}
+		await this.LOAD_RECORDS();
 
-		if (!this.GET_CATEGORIES.length) {
-			await this.LOAD_CATEGORIES();
-		}
+		await this.LOAD_CATEGORIES();
 
 		this.labels = this.GET_CATEGORIES.map(e => e.title);
 
-		this.datasetData = this.GET_CATEGORIES.map(category => category.records.reduce((r, e) => {
-			if (e.type === 'outcome') {
-				return r + e.amount;
-			}
-			return r;
-		}, 0));
+		this.datasetData = this.GET_CATEGORIES.map(category => category.records.reduce(
+			(r, e) => (e.type === 'outcome' ? r + e.amount : r - e.amount),
+			0,
+		));
 
 		this.loading = false;
 	},
