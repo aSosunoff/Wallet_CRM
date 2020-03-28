@@ -13,7 +13,7 @@
 			</thead>
 
 			<tbody>
-				<tr v-for="(rec, inx) of GET_RECORDS" :key="rec.id">
+				<tr v-for="(rec, inx) of itemsOnPage" :key="rec.id">
 					<td>{{ inx + 1 }}</td>
 					<td>{{ rec.amount | currencyFilter }}</td>
 					<td>{{ rec.created | dateFilter }}</td>
@@ -35,12 +35,12 @@
 		</table>
 
 		<Paginate
-			:page-count="20"
+			:page-count="pageCount"
 			:container-class="'pagination'"
 			:page-class="'waves-effect'"
 			:prev-text="`<`"
 			:next-text="`>`"
-			:click-handler="onClickPage"
+			:click-handler="pageChangeHandler"
 		>
 		</Paginate>
 	</div>
@@ -48,16 +48,22 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import paginationMixin from '@/mixins/pagination.mixin';
 
 export default {
 	name: 'history',
+	mixins: [paginationMixin],
+	data: () => ({}),
 	methods: {
-		onClickPage(s) {
-			console.log(s);
+		onClickPage(page) {
+			this.page = page;
 		},
 	},
 	computed: {
 		...mapGetters(['GET_RECORDS']),
+	},
+	mounted() {
+		this.setupPagination(this.GET_RECORDS);
 	},
 };
 </script>
