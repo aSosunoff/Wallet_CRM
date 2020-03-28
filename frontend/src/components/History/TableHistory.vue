@@ -51,20 +51,14 @@ export default {
 	computed: {},
 	mounted() {
 		this.setupPagination(
-			this.items.map((item, inx) => {
-				const typeColorClass = item.type === 'outcome' ? 'red' : 'green';
-
-				return {
-					id: item.id,
-					rowNumber: inx + 1,
-					amount: currencyFilter(item.amount),
-					created: dateFilter(item.created),
-					categoryTitle: item.category.title,
-					type: `<span class="white-text badge ${typeColorClass}">${recordType(
-						item.type,
-					)}</span>`,
-				};
-			}),
+			this.items.map((item, inx) => ({
+				id: item.id,
+				rowNumber: inx + 1,
+				amount: currencyFilter(item.amount),
+				created: dateFilter(item.created),
+				categoryTitle: item.category.title,
+				type: recordType(item.type),
+			})),
 		);
 	},
 };

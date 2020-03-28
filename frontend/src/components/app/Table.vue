@@ -19,8 +19,7 @@
 				<td
 					v-for="(cell, inxSub) of filterVisibleField(rec)"
 					:key="inx + inxSub"
-					v-html="cell"
-				></td>
+				>{{ cell }}</td>
 
 				<td v-if="isRowBtn1">
 					<button class="btn-small btn" @click="$emit('rowBtn1', rec, $event)">
