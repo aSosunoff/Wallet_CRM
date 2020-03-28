@@ -10,11 +10,13 @@ export default {
 	data() {
 		const page = window.parseInt(this.$route.query.page) || 1;
 		return {
-			page,
-			pageSize: 5,
-			pageCount: 0,
-			items: [],
-			itemsOnPage: [],
+			pagination: {
+				current: page,
+				size: 5,
+				count: 0,
+				allItems: [],
+				itemsOnPage: [],
+			},
 		};
 	},
 	methods: {
@@ -24,13 +26,14 @@ export default {
 					throw error;
 				}
 			});
-			this.page = page;
-			this.itemsOnPage = this.items[page - 1] || this.items[0];
+			// eslint-disable-next-line
+			this.pagination.itemsOnPage =
+				this.pagination.allItems[page - 1] || this.pagination.allItems[0];
 		},
-		setupPagination(items) {
-			this.items = chunk(items, this.pageSize);
-			this.pageCount = this.items.length;
-			this.pageChangeHandler(this.page);
+		setupPagination(pageAllItems) {
+			this.pagination.allItems = chunk(pageAllItems, this.pagination.size);
+			this.pagination.count = this.pagination.allItems.length;
+			this.pageChangeHandler(this.pagination.current);
 		},
 	},
 };

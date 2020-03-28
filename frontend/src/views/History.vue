@@ -12,7 +12,7 @@
 			</div>
 
 			<section>
-				<Table />
+				<TableHistory :items="GET_RECORDS"/>
 			</section>
 		</div>
 	</div>
@@ -40,7 +40,7 @@ export default {
 		this.loading = false;
 	},
 	components: {
-		Table: () => import('@/components/History/Table'),
+		TableHistory: () => import('@/components/History/TableHistory'),
 	},
 };
 </script>
