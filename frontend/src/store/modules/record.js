@@ -1,6 +1,6 @@
 export default {
 	state: {
-		records: null,
+		records: [],
 	},
 	mutations: {
 		ADD_RECORD(state, record) {

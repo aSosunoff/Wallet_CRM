@@ -19,23 +19,28 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
 	name: 'history',
 	data: () => ({
 		loading: true,
 	}),
-	components: {
-		Table: () => import('@/components/History/Table'),
+	computed: {
+		...mapGetters(['GET_RECORDS']),
 	},
 	methods: {
 		...mapActions(['GET_ALL_RECORDS']),
 	},
 	async mounted() {
-		await this.GET_ALL_RECORDS();
+		if (!this.GET_RECORDS.length) {
+			await this.GET_ALL_RECORDS();
+		}
 
 		this.loading = false;
+	},
+	components: {
+		Table: () => import('@/components/History/Table'),
 	},
 };
 </script>
