@@ -16,9 +16,9 @@ export default {
 		},
 		async UPDATE_USER({ commit }, user) {
 			try {
-				await window.axiosTransport.put('user/putUpdateUser', user);
+				const { data } = await window.axiosTransport.put('user/putUpdateUser', user);
 
-				return true;
+				return data;
 			} catch (e) {
 				commit('SET_ERROR', e);
 

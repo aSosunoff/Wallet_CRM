@@ -19,7 +19,7 @@ export default new Vuex.Store({
 	},
 	mutations: {
 		SET_AUTH_USER(state, authUser) {
-			state.authUser = { ...authUser };
+			state.authUser = authUser;
 		},
 		CLEAR_AUTH_USER(state) {
 			state.authUser = {};
@@ -43,9 +43,9 @@ export default new Vuex.Store({
 			try {
 				const { data } = await window.axiosTransport.get('user/getAuthUser');
 
-				commit('SET_AUTH_USER', { ...data });
+				commit('SET_AUTH_USER', data);
 
-				return data;
+				return true;
 			} catch (e) {
 				commit('SET_ERROR', e);
 
