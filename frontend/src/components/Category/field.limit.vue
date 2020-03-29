@@ -11,7 +11,7 @@
 			}"
 		/>
 
-		<label for="limit">Лимит</label>
+		<label for="limit" :class="{ active: !!limit }">Лимит</label>
 
 		<small class="helper-text invalid" v-if="$v.limit.$dirty && !$v.limit.minValue"
 			>Необходимо ввести минимальный лимит {{ $v.limit.$params.minValue.min }}</small
@@ -49,12 +49,6 @@ export default {
 			this.$v.$reset();
 			this.limit = 100;
 		},
-	},
-	updated() {
-		window.M.updateTextFields();
-	},
-	mounted() {
-		window.M.updateTextFields();
 	},
 };
 </script>

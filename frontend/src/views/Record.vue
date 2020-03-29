@@ -34,7 +34,7 @@
 					>
 				</select>
 
-				<label>Выберите категорию</label>
+				<label :class="{ active: !!recordNew.idCategory }">Выберите категорию</label>
 
 				<small
 					class="helper-text invalid"
@@ -68,7 +68,7 @@
 					}"
 				/>
 
-				<label for="amount">Сумма</label>
+				<label for="amount" :class="{ active: !!recordNew.amount }">Сумма</label>
 
 				<small
 					class="helper-text invalid"
@@ -95,7 +95,7 @@
 					}"
 				/>
 
-				<label for="description">Описание</label>
+				<label for="description" :class="{ active: !!recordNew.description }">Описание</label>
 
 				<small
 					class="helper-text invalid"
@@ -202,8 +202,6 @@ export default {
 		await this.$nextTick();
 
 		this.init_select = window.M.FormSelect.init(this.$refs.select);
-
-		window.M.updateTextFields();
 	},
 	destroyed() {
 		if (this.init_select && this.init_select.destroy) {
